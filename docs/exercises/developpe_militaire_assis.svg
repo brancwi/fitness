@@ -1,54 +1,46 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
   <defs>
+    <linearGradient id="bgGrad" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="#1A1A2E"/>
+      <stop offset="100%" stop-color="#16213E"/>
+    </linearGradient>
+    <filter id="glow" x="-20%" y="-20%" width="140%" height="140%">
+      <feGaussianBlur stdDeviation="2.5" result="blur"/>
+      <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
     <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
       <path d="M0,0 L0,6 L9,3 z" fill="#FF6B35"/>
     </marker>
   </defs>
-  <rect width="400" height="320" fill="#1A1A2E"/>
-  <text x="200" y="25" text-anchor="middle" fill="#E0E0E0" font-size="16" font-weight="bold">DÉVELOPPÉ MILITAIRE ASSIS</text>
-  <text x="200" y="42" text-anchor="middle" fill="#888" font-size="11">3 × 8–10 reps — Charge Modérée</text>
 
-  <!-- Banc -->
-  <rect x="150" y="190" width="100" height="10" rx="4" fill="#4A4A6A"/>
-  <rect x="170" y="200" width="8" height="35" fill="#3A3A5A"/>
-  <rect x="222" y="200" width="8" height="35" fill="#3A3A5A"/>
+  <!-- Fond -->
+  <rect width="400" height="320" fill="url(#bgGrad)"/>
 
-  <!-- Silhouette assise -->
-  <ellipse cx="200" cy="125" rx="22" ry="20" fill="#E8D5C4"/>
-  <rect x="178" y="140" width="44" height="55" rx="16" fill="#D4C4B0"/>
-  <!-- Jambes -->
-  <line x1="188" y1="190" x2="175" y2="235" stroke="#D4C4B0" stroke-width="16" stroke-linecap="round"/>
-  <line x1="212" y1="190" x2="225" y2="235" stroke="#D4C4B0" stroke-width="16" stroke-linecap="round"/>
-  <ellipse cx="172" cy="240" rx="18" ry="7" fill="#D4C4B0"/>
-  <ellipse cx="228" cy="240" rx="18" ry="7" fill="#D4C4B0"/>
+  <!-- Titre -->
+  <text x="200" y="28" text-anchor="middle" fill="#E0E0E0" font-size="15" font-weight="bold" font-family="sans-serif">DÉVELOPPÉ MILITAIRE ASSIS</text>
+  <text x="200" y="45" text-anchor="middle" fill="#888" font-size="11" font-family="sans-serif">3 × 8–10 reps — Charge Modérée</text>
 
-  <!-- Bras avec haltères -->
-  <line x1="220" y1="150" x2="250" y2="130" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
-  <line x1="250" y1="130" x2="280" y2="100" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
-  <rect x="268" y="95" width="28" height="8" rx="2" fill="#AAA"/>
-  <circle cx="268" cy="99" r="7" fill="#888"/>
-  <circle cx="296" cy="99" r="7" fill="#888"/>
+  <!-- Zone centrale décorative -->
+  <circle cx="200" cy="155" r="75" fill="none" stroke="#2A2A4A" stroke-width="1.5"/>
+  <circle cx="200" cy="155" r="60" fill="none" stroke="#2A2A4A" stroke-width="1" stroke-dasharray="4 4"/>
 
-  <line x1="180" y1="150" x2="150" y2="130" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
-  <line x1="150" y1="130" x2="120" y2="100" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
-  <rect x="104" y="95" width="28" height="8" rx="2" fill="#AAA"/>
-  <circle cx="104" cy="99" r="7" fill="#888"/>
-  <circle cx="132" cy="99" r="7" fill="#888"/>
+  
+  <rect x="150.0" y="125.0" width="40" height="10" rx="5.0" fill="#666"/>
+  <rect x="144.0" y="121.0" width="8" height="18" rx="2" fill="#FF6B35"/>
+  <rect x="188.0" y="121.0" width="8" height="18" rx="2" fill="#FF6B35"/>
+  <rect x="210.0" y="125.0" width="40" height="10" rx="5.0" fill="#666"/>
+  <rect x="204.0" y="121.0" width="8" height="18" rx="2" fill="#FF6B35"/>
+  <rect x="248.0" y="121.0" width="8" height="18" rx="2" fill="#FF6B35"/>  <line x1="170" y1="145" x2="170" y2="115" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="1"/>  <line x1="230" y1="145" x2="230" y2="115" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="1"/>  <line x1="170" y1="110" x2="170" y2="140" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>  <line x1="230" y1="110" x2="230" y2="140" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>  <rect x="160" y="185" width="80" height="8" rx="3" fill="#4A4A6A"/>  <rect x="175" y="193" width="6" height="20" fill="#3A3A5A"/>  <rect x="219" y="193" width="6" height="20" fill="#3A3A5A"/>
 
-  <!-- Flèches mouvement -->
-  <line x1="130" y1="120" x2="145" y2="135" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="145" y1="140" x2="130" y2="125" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>
-  <line x1="270" y1="120" x2="255" y2="135" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)"/>
-  <line x1="255" y1="140" x2="270" y2="125" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>
-
-  <!-- Muscles -->
-  <text x="20" y="275" fill="#FF6B35" font-size="10">▬ Deltoïdes (ant. + lat.)</text>
-  <text x="20" y="290" fill="#42A5F5" font-size="10">▬ Triceps</text>
-  <text x="20" y="305" fill="#66BB6A" font-size="10">▬ Trapèzes</text>
+  <!-- Muscles sollicités -->
+  <text x="25" y="275" fill="#FF6B35" font-size="10" font-weight="bold" font-family="sans-serif">▬ MUSCLES</text>
+    <text x="25" y="290" fill="#FF6B35" font-size="9" font-family="sans-serif">▬ Deltoïdes ant. &amp; lat.</text>
+  <text x="25" y="305" fill="#42A5F5" font-size="9" font-family="sans-serif">▬ Triceps</text>
+  <text x="25" y="320" fill="#66BB6A" font-size="9" font-family="sans-serif">▬ Trapèzes</text>
 
   <!-- Vigilance -->
-  <rect x="180" y="260" width="200" height="45" rx="6" fill="#2A2A4A" stroke="#FF6B35" stroke-width="2"/>
-  <text x="190" y="278" fill="#FF6B35" font-size="10" font-weight="bold">⚠ VIGILANCE</text>
-  <text x="190" y="293" fill="#CCC" font-size="9">Assis obligatoire : protège la lombaire</text>
-  <text x="190" y="305" fill="#CCC" font-size="9">Pas de charge lourde debout !</text>
+  <rect x="195" y="258" width="185" height="52" rx="8" fill="#2A1A1A" stroke="#FF6B35" stroke-width="1.2"/>
+  <text x="208" y="272" fill="#FF6B35" font-size="10" font-weight="bold" font-family="sans-serif">⚠ VIGILANCE</text>
+    <text x="208" y="288" fill="#CCC" font-size="9" font-family="sans-serif">Assis obligatoire</text>
+  <text x="208" y="290" fill="#CCC" font-size="9" font-family="sans-serif">Pas de charge lourde debout</text>
 </svg>
