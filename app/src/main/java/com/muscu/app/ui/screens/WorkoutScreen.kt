@@ -15,6 +15,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.material.icons.filled.Timer
@@ -68,7 +69,8 @@ private fun restRecommendation(intensity: Intensity, settings: AppSettings?): St
 fun WorkoutScreen(
     viewModel: WorkoutViewModel,
     dayOfWeek: Int,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onExerciseInfo: (String, String) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.uiState.collectAsState()
     var showFinishDialog by remember { mutableStateOf(false) }
@@ -115,7 +117,10 @@ fun WorkoutScreen(
                 ProgressHeader(state)
 
                 currentExercise?.let { ex ->
-                    ExerciseCard(exercise = ex)
+                    ExerciseCard(
+                        exercise = ex,
+                        onInfoClick = { onExerciseInfo(ex.id, ex.name) }
+                    )
                 }
 
                 val timerState = state.timerState
@@ -237,17 +242,34 @@ private fun WorkoutCompletedCard(onBack: () -> Unit) {
 }
 
 @Composable
-private fun ExerciseCard(exercise: Exercise) {
+private fun ExerciseCard(
+    exercise: Exercise,
+    onInfoClick: () -> Unit
+) {
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                exercise.name,
-                style = MaterialTheme.typography.titleLarge,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    exercise.name,
+                    style = MaterialTheme.typography.titleLarge,
+                    fontWeight = FontWeight.Bold,
+                    modifier = Modifier.weight(1f)
+                )
+                IconButton(onClick = onInfoClick) {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = "Voir la fiche de l'exercice",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
             val reps = if (exercise.targetRepsMax != exercise.targetRepsMin)
                 "${exercise.targetRepsMin}–${exercise.targetRepsMax}"
             else

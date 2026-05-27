@@ -29,6 +29,7 @@ import androidx.navigation.compose.rememberNavController
 import com.muscu.app.data.repository.AppSettingsRepository
 import com.muscu.app.data.repository.WorkoutRepository
 import com.muscu.app.ui.screens.DashboardScreen
+import com.muscu.app.ui.screens.ExerciseDetailScreen
 import com.muscu.app.ui.screens.MeasurementHistoryScreen
 import com.muscu.app.ui.screens.MeasurementScreen
 import com.muscu.app.ui.screens.ProgramScreen
@@ -113,6 +114,9 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                     viewModel = viewModel,
                     onStartWorkout = { day ->
                         navController.navigate("workout/$day")
+                    },
+                    onExerciseInfo = { exId, exName ->
+                        navController.navigate("exercise_detail/$exId/${java.net.URLEncoder.encode(exName, "UTF-8")}")
                     }
                 )
             }
@@ -140,6 +144,21 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                 WorkoutScreen(
                     viewModel = viewModel,
                     dayOfWeek = day,
+                    onBack = { navController.popBackStack() },
+                    onExerciseInfo = { exId, exName ->
+                        navController.navigate("exercise_detail/$exId/${java.net.URLEncoder.encode(exName, "UTF-8")}")
+                    }
+                )
+            }
+            composable("exercise_detail/{exerciseId}/{exerciseName}") { backStackEntry ->
+                val exId = backStackEntry.arguments?.getString("exerciseId") ?: ""
+                val exName = java.net.URLDecoder.decode(
+                    backStackEntry.arguments?.getString("exerciseName") ?: "",
+                    "UTF-8"
+                )
+                ExerciseDetailScreen(
+                    exerciseId = exId,
+                    exerciseName = exName,
                     onBack = { navController.popBackStack() }
                 )
             }
