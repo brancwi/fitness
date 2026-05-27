@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#FF6B35"/>
+    </marker>
+  </defs>
+  <rect width="400" height="320" fill="#1A1A2E"/>
+  <text x="200" y="25" text-anchor="middle" fill="#E0E0E0" font-size="16" font-weight="bold">DÉVELOPPÉ MILITAIRE ASSIS</text>
+  <text x="200" y="42" text-anchor="middle" fill="#888" font-size="11">3 × 8–10 reps — Charge Modérée</text>
+
+  <!-- Banc -->
+  <rect x="150" y="190" width="100" height="10" rx="4" fill="#4A4A6A"/>
+  <rect x="170" y="200" width="8" height="35" fill="#3A3A5A"/>
+  <rect x="222" y="200" width="8" height="35" fill="#3A3A5A"/>
+
+  <!-- Silhouette assise -->
+  <ellipse cx="200" cy="125" rx="22" ry="20" fill="#E8D5C4"/>
+  <rect x="178" y="140" width="44" height="55" rx="16" fill="#D4C4B0"/>
+  <!-- Jambes -->
+  <line x1="188" y1="190" x2="175" y2="235" stroke="#D4C4B0" stroke-width="16" stroke-linecap="round"/>
+  <line x1="212" y1="190" x2="225" y2="235" stroke="#D4C4B0" stroke-width="16" stroke-linecap="round"/>
+  <ellipse cx="172" cy="240" rx="18" ry="7" fill="#D4C4B0"/>
+  <ellipse cx="228" cy="240" rx="18" ry="7" fill="#D4C4B0"/>
+
+  <!-- Bras avec haltères -->
+  <line x1="220" y1="150" x2="250" y2="130" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
+  <line x1="250" y1="130" x2="280" y2="100" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <rect x="268" y="95" width="28" height="8" rx="2" fill="#AAA"/>
+  <circle cx="268" cy="99" r="7" fill="#888"/>
+  <circle cx="296" cy="99" r="7" fill="#888"/>
+
+  <line x1="180" y1="150" x2="150" y2="130" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
+  <line x1="150" y1="130" x2="120" y2="100" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <rect x="104" y="95" width="28" height="8" rx="2" fill="#AAA"/>
+  <circle cx="104" cy="99" r="7" fill="#888"/>
+  <circle cx="132" cy="99" r="7" fill="#888"/>
+
+  <!-- Flèches mouvement -->
+  <line x1="130" y1="120" x2="145" y2="135" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="145" y1="140" x2="130" y2="125" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>
+  <line x1="270" y1="120" x2="255" y2="135" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="255" y1="140" x2="270" y2="125" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>
+
+  <!-- Muscles -->
+  <text x="20" y="275" fill="#FF6B35" font-size="10">▬ Deltoïdes (ant. + lat.)</text>
+  <text x="20" y="290" fill="#42A5F5" font-size="10">▬ Triceps</text>
+  <text x="20" y="305" fill="#66BB6A" font-size="10">▬ Trapèzes</text>
+
+  <!-- Vigilance -->
+  <rect x="180" y="260" width="200" height="45" rx="6" fill="#2A2A4A" stroke="#FF6B35" stroke-width="2"/>
+  <text x="190" y="278" fill="#FF6B35" font-size="10" font-weight="bold">⚠ VIGILANCE</text>
+  <text x="190" y="293" fill="#CCC" font-size="9">Assis obligatoire : protège la lombaire</text>
+  <text x="190" y="305" fill="#CCC" font-size="9">Pas de charge lourde debout !</text>
+</svg>

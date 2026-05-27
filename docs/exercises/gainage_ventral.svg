@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+  <rect width="400" height="320" fill="#1A1A2E"/>
+  <text x="200" y="25" text-anchor="middle" fill="#E0E0E0" font-size="16" font-weight="bold">GAINAGE VENTRAL</text>
+  <text x="200" y="42" text-anchor="middle" fill="#888" font-size="11">3 × 30–45 sec — Poids du corps</text>
+
+  <!-- Sol -->
+  <rect x="30" y="210" width="340" height="4" fill="#4A4A6A"/>
+
+  <!-- Silhouette en planche -->
+  <!-- Tête -->
+  <ellipse cx="80" cy="180" rx="20" ry="16" fill="#E8D5C4"/>
+  <!-- Avant-bras au sol -->
+  <line x1="95" y1="188" x2="130" y2="205" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
+  <line x1="95" y1="195" x2="130" y2="212" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
+  <!-- Corps -->
+  <rect x="120" y="175" width="160" height="22" rx="10" fill="#D4C4B0"/>
+  <!-- Jambes -->
+  <line x1="280" y1="185" x2="340" y2="190" stroke="#D4C4B0" stroke-width="14" stroke-linecap="round"/>
+  <line x1="340" y1="190" x2="355" y2="210" stroke="#D4C4B0" stroke-width="12" stroke-linecap="round"/>
+  <line x1="280" y1="185" x2="340" y2="202" stroke="#D4C4B0" stroke-width="14" stroke-linecap="round"/>
+  <line x1="340" y1="202" x2="355" y2="210" stroke="#D4C4B0" stroke-width="12" stroke-linecap="round"/>
+
+  <!-- Ligne droite référence -->
+  <line x1="80" y1="168" x2="355" y2="168" stroke="#FF6B35" stroke-width="1.5" stroke-dasharray="5,3"/>
+  <text x="360" y="172" fill="#FF6B35" font-size="9">Corps en ligne droite</text>
+
+  <!-- Fleche zone core -->
+  <line x1="200" y1="160" x2="200" y2="140" stroke="#42A5F5" stroke-width="2" marker-end="url(#arrow)"/>
+  <text x="200" y="130" text-anchor="middle" fill="#42A5F5" font-size="10" font-weight="bold">CORE ENGAGÉ</text>
+
+  <!-- Timer visuel -->
+  <circle cx="200" cy="80" r="30" fill="#2A2A4A" stroke="#42A5F5" stroke-width="2"/>
+  <text x="200" y="75" text-anchor="middle" fill="#42A5F5" font-size="12" font-weight="bold">30–45</text>
+  <text x="200" y="90" text-anchor="middle" fill="#888" font-size="9">secondes</text>
+
+  <!-- Muscles -->
+  <text x="20" y="275" fill="#FF6B35" font-size="10">▬ Transverse de l'abdomen</text>
+  <text x="20" y="290" fill="#42A5F5" font-size="10">▬ Rectus abdominis</text>
+  <text x="20" y="305" fill="#66BB6A" font-size="10">▬ Lombaires (stabilisation)</text>
+
+  <!-- Vigilance -->
+  <rect x="180" y="260" width="200" height="45" rx="6" fill="#2A2A4A" stroke="#FF6B35" stroke-width="2"/>
+  <text x="190" y="278" fill="#FF6B35" font-size="10" font-weight="bold">⚠ VIGILANCE</text>
+  <text x="190" y="293" fill="#CCC" font-size="9">Ne creuse pas le dos</text>
+  <text x="190" y="305" fill="#CCC" font-size="9">Ventre rentré, fessiers serrés</text>
+
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#42A5F5"/>
+    </marker>
+  </defs>
+</svg>

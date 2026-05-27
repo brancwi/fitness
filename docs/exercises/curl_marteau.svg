@@ -1,0 +1,54 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#FF6B35"/>
+    </marker>
+  </defs>
+  <rect width="400" height="320" fill="#1A1A2E"/>
+  <text x="200" y="25" text-anchor="middle" fill="#E0E0E0" font-size="16" font-weight="bold">CURL MARTEAU</text>
+  <text x="200" y="42" text-anchor="middle" fill="#888" font-size="11">3 × 10 reps — Charge Légère</text>
+
+  <!-- Silhouette -->
+  <ellipse cx="200" cy="65" rx="22" ry="20" fill="#E8D5C4"/>
+  <rect x="178" y="80" width="44" height="55" rx="16" fill="#D4C4B0"/>
+  <line x1="188" y1="130" x2="180" y2="220" stroke="#D4C4B0" stroke-width="16" stroke-linecap="round"/>
+  <line x1="212" y1="130" x2="220" y2="220" stroke="#D4C4B0" stroke-width="16" stroke-linecap="round"/>
+  <ellipse cx="175" cy="225" rx="20" ry="7" fill="#D4C4B0"/>
+  <ellipse cx="225" cy="225" rx="20" ry="7" fill="#D4C4B0"/>
+
+  <!-- Bras droit bas (position neutre) -->
+  <line x1="220" y1="90" x2="260" y2="120" stroke="#D4C4B0" stroke-width="11" stroke-linecap="round"/>
+  <line x1="260" y1="120" x2="285" y2="160" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <!-- Haltère neutre -->
+  <rect x="275" y="155" width="8" height="28" rx="2" fill="#AAA"/>
+  <circle cx="279" cy="155" r="7" fill="#888"/>
+  <circle cx="279" cy="183" r="7" fill="#888"/>
+
+  <!-- Bras gauche haut -->
+  <line x1="180" y1="90" x2="145" y2="120" stroke="#D4C4B0" stroke-width="11" stroke-linecap="round"/>
+  <line x1="145" y1="120" x2="125" y2="90" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <!-- Haltère neutre -->
+  <rect x="107" y="85" width="8" height="28" rx="2" fill="#AAA"/>
+  <circle cx="111" cy="85" r="7" fill="#888"/>
+  <circle cx="111" cy="113" r="7" fill="#888"/>
+
+  <!-- Flèches -->
+  <line x1="270" y1="140" x2="270" y2="115" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="270" y1="165" x2="270" y2="140" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>
+  <line x1="115" y1="110" x2="115" y2="135" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.4"/>
+
+  <!-- Poignet neutre -->
+  <text x="300" y="160" fill="#42A5F5" font-size="9">Poignet neutre</text>
+  <line x1="285" y1="155" x2="295" y2="155" stroke="#42A5F5" stroke-width="1"/>
+
+  <!-- Muscles -->
+  <text x="20" y="275" fill="#FF6B35" font-size="10">▬ Biceps brachial</text>
+  <text x="20" y="290" fill="#42A5F5" font-size="10">▬ Brachial antérieur</text>
+  <text x="20" y="305" fill="#66BB6A" font-size="10">▬ Brachio-radial (avant-bras)</text>
+
+  <!-- Vigilance -->
+  <rect x="180" y="260" width="200" height="45" rx="6" fill="#2A2A4A" stroke="#FF6B35" stroke-width="1"/>
+  <text x="190" y="278" fill="#FF6B35" font-size="10" font-weight="bold">⚠ Vigilance</text>
+  <text x="190" y="293" fill="#CCC" font-size="9">Garde les poignets neutres</text>
+  <text x="190" y="305" fill="#CCC" font-size="9">Pas d'oscillation du buste</text>
+</svg>

@@ -1,0 +1,57 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#FF6B35"/>
+    </marker>
+  </defs>
+  <rect width="400" height="320" fill="#1A1A2E"/>
+  <text x="200" y="25" text-anchor="middle" fill="#E0E0E0" font-size="16" font-weight="bold">BENCH PRESS PRISE SERRÉE</text>
+  <text x="200" y="42" text-anchor="middle" fill="#888" font-size="11">3 × 8–10 reps — Charge Modérée</text>
+
+  <!-- Banc -->
+  <rect x="50" y="220" width="300" height="12" rx="4" fill="#4A4A6A"/>
+  <rect x="80" y="232" width="10" height="40" fill="#3A3A5A"/>
+  <rect x="310" y="232" width="10" height="40" fill="#3A3A5A"/>
+
+  <!-- Silhouette -->
+  <ellipse cx="200" cy="185" rx="35" ry="25" fill="#E8D5C4"/>
+  <rect x="130" y="175" width="140" height="22" rx="10" fill="#D4C4B0"/>
+  <rect x="80" y="178" width="60" height="16" rx="8" fill="#D4C4B0"/>
+  <rect x="260" y="178" width="60" height="16" rx="8" fill="#D4C4B0"/>
+
+  <!-- Bras avec haltères rapprochés -->
+  <line x1="80" y1="186" x2="45" y2="150" stroke="#D4C4B0" stroke-width="12" stroke-linecap="round"/>
+  <line x1="45" y1="150" x2="60" y2="115" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
+  <!-- Haltère proche du centre -->
+  <rect x="45" y="108" width="30" height="10" rx="3" fill="#AAA"/>
+  <circle cx="45" cy="113" r="10" fill="#888"/>
+  <circle cx="75" cy="113" r="10" fill="#888"/>
+
+  <line x1="320" y1="186" x2="355" y2="150" stroke="#D4C4B0" stroke-width="12" stroke-linecap="round"/>
+  <line x1="355" y1="150" x2="340" y2="115" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
+  <rect x="325" y="108" width="30" height="10" rx="3" fill="#AAA"/>
+  <circle cx="325" cy="113" r="10" fill="#888"/>
+  <circle cx="355" cy="113" r="10" fill="#888"/>
+
+  <!-- Flèches -->
+  <line x1="60" y1="125" x2="60" y2="150" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="340" y1="125" x2="340" y2="150" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)"/>
+  <line x1="60" y1="165" x2="60" y2="140" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.5"/>
+  <line x1="340" y1="165" x2="340" y2="140" stroke="#FF6B35" stroke-width="2.5" marker-end="url(#arrow)" opacity="0.5"/>
+
+  <!-- Zone triceps -->
+  <ellipse cx="60" cy="150" rx="12" ry="18" fill="#42A5F5" opacity="0.2"/>
+  <ellipse cx="340" cy="150" rx="12" ry="18" fill="#42A5F5" opacity="0.2"/>
+  <text x="60" y="180" text-anchor="middle" fill="#42A5F5" font-size="9">Triceps</text>
+
+  <!-- Muscles -->
+  <text x="20" y="275" fill="#FF6B35" font-size="10">▬ Triceps (accent)</text>
+  <text x="20" y="290" fill="#42A5F5" font-size="10">▬ Pectoraux internes</text>
+  <text x="20" y="305" fill="#66BB6A" font-size="10">▬ Deltoïdes antérieurs</text>
+
+  <!-- Vigilance -->
+  <rect x="180" y="260" width="200" height="45" rx="6" fill="#2A2A4A" stroke="#FF6B35" stroke-width="1"/>
+  <text x="190" y="278" fill="#FF6B35" font-size="10" font-weight="bold">⚠ Vigilance</text>
+  <text x="190" y="293" fill="#CCC" font-size="9">Coudes plus serrés qu'un bench classique</text>
+  <text x="190" y="305" fill="#CCC" font-size="9">Colonne soutenue sur le banc</text>
+</svg>

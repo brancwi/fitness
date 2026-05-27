@@ -1,0 +1,62 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 320" width="400" height="320">
+  <defs>
+    <marker id="arrow" markerWidth="10" markerHeight="10" refX="9" refY="3" orient="auto">
+      <path d="M0,0 L0,6 L9,3 z" fill="#FF6B35"/>
+    </marker>
+  </defs>
+  <rect width="400" height="320" fill="#1A1A2E"/>
+  <text x="200" y="25" text-anchor="middle" fill="#E0E0E0" font-size="16" font-weight="bold">FENTES ALTERNÉES</text>
+  <text x="200" y="42" text-anchor="middle" fill="#888" font-size="11">3 × 10 reps — Charge Légère</text>
+
+  <!-- Position de départ -->
+  <text x="100" y="60" text-anchor="middle" fill="#888" font-size="10">Position initiale</text>
+  <ellipse cx="100" cy="80" rx="18" ry="16" fill="#E8D5C4"/>
+  <rect x="82" y="92" width="36" height="48" rx="12" fill="#D4C4B0"/>
+  <line x1="90" y1="136" x2="85" y2="195" stroke="#D4C4B0" stroke-width="13" stroke-linecap="round"/>
+  <line x1="110" y1="136" x2="115" y2="195" stroke="#D4C4B0" stroke-width="13" stroke-linecap="round"/>
+  <ellipse cx="82" cy="200" rx="16" ry="6" fill="#D4C4B0"/>
+  <ellipse cx="118" cy="200" rx="16" ry="6" fill="#D4C4B0"/>
+  <!-- Bras + haltères -->
+  <line x1="82" y1="105" x2="60" y2="130" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <line x1="118" y1="105" x2="140" y2="130" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <rect x="52" y="125" width="16" height="6" rx="2" fill="#AAA"/>
+  <rect x="132" y="125" width="16" height="6" rx="2" fill="#AAA"/>
+
+  <!-- Flèche vers fente -->
+  <line x1="100" y1="155" x2="200" y2="155" stroke="#FF6B35" stroke-width="2" marker-end="url(#arrow)"/>
+
+  <!-- Position fente -->
+  <text x="300" y="60" text-anchor="middle" fill="#888" font-size="10">Fente avant</text>
+  <ellipse cx="300" cy="85" rx="18" ry="16" fill="#E8D5C4"/>
+  <rect x="282" y="97" width="36" height="48" rx="12" fill="#D4C4B0"/>
+  <!-- Jambe avant pliée -->
+  <line x1="290" y1="141" x2="275" y2="185" stroke="#D4C4B0" stroke-width="13" stroke-linecap="round"/>
+  <line x1="275" y1="185" x2="260" y2="210" stroke="#D4C4B0" stroke-width="11" stroke-linecap="round"/>
+  <ellipse cx="255" cy="215" rx="16" ry="6" fill="#D4C4B0"/>
+  <!-- Jambe arrière -->
+  <line x1="310" y1="141" x2="340" y2="190" stroke="#D4C4B0" stroke-width="11" stroke-linecap="round"/>
+  <line x1="340" y1="190" x2="345" y2="215" stroke="#D4C4B0" stroke-width="10" stroke-linecap="round"/>
+  <ellipse cx="348" cy="220" rx="14" ry="5" fill="#D4C4B0"/>
+  <!-- Haltères -->
+  <line x1="282" y1="110" x2="260" y2="135" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <line x1="318" y1="110" x2="340" y2="135" stroke="#D4C4B0" stroke-width="9" stroke-linecap="round"/>
+  <rect x="252" y="130" width="16" height="6" rx="2" fill="#AAA"/>
+  <rect x="332" y="130" width="16" height="6" rx="2" fill="#AAA"/>
+
+  <!-- Ligne angle -->
+  <line x1="250" y1="215" x2="355" y2="215" stroke="#444" stroke-width="1" stroke-dasharray="4,2"/>
+
+  <!-- Flèche retour -->
+  <line x1="300" y1="235" x2="200" y2="235" stroke="#FF6B35" stroke-width="2" marker-end="url(#arrow)" opacity="0.5"/>
+
+  <!-- Muscles -->
+  <text x="20" y="275" fill="#FF6B35" font-size="10">▬ Quadriceps</text>
+  <text x="20" y="290" fill="#42A5F5" font-size="10">▬ Fessiers</text>
+  <text x="20" y="305" fill="#66BB6A" font-size="10">▬ Stabilisateurs du tronc</text>
+
+  <!-- Vigilance -->
+  <rect x="180" y="260" width="200" height="45" rx="6" fill="#2A2A4A" stroke="#FF6B35" stroke-width="1"/>
+  <text x="190" y="278" fill="#FF6B35" font-size="10" font-weight="bold">⚠ Vigilance</text>
+  <text x="190" y="293" fill="#CCC" font-size="9">Genou avant ne dépasse pas la pointe du pied</text>
+  <text x="190" y="305" fill="#CCC" font-size="9">Haltères légers, mouvement contrôlé</text>
+</svg>
