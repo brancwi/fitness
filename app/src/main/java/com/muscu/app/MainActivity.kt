@@ -1,0 +1,148 @@
+package com.muscu.app
+
+import android.os.Bundle
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.setContent
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.FitnessCenter
+import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.List
+import androidx.compose.material.icons.filled.Settings
+import androidx.compose.material.icons.filled.Straighten
+import androidx.compose.material3.Icon
+import androidx.compose.material3.NavigationBar
+import androidx.compose.material3.NavigationBarItem
+import androidx.compose.material3.Scaffold
+import androidx.compose.material3.Text
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.lifecycle.viewmodel.compose.viewModel
+import androidx.navigation.NavDestination.Companion.hierarchy
+import androidx.navigation.NavGraph.Companion.findStartDestination
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.currentBackStackEntryAsState
+import androidx.navigation.compose.rememberNavController
+import com.muscu.app.data.repository.AppSettingsRepository
+import com.muscu.app.data.repository.WorkoutRepository
+import com.muscu.app.ui.screens.DashboardScreen
+import com.muscu.app.ui.screens.MeasurementHistoryScreen
+import com.muscu.app.ui.screens.MeasurementScreen
+import com.muscu.app.ui.screens.ProgramScreen
+import com.muscu.app.ui.screens.SettingsScreen
+import com.muscu.app.ui.screens.WorkoutScreen
+import com.muscu.app.ui.theme.MuscuTheme
+import com.muscu.app.viewmodel.DashboardViewModel
+import com.muscu.app.viewmodel.MeasurementViewModel
+import com.muscu.app.viewmodel.ProgramViewModel
+import com.muscu.app.viewmodel.SettingsViewModel
+import com.muscu.app.viewmodel.WorkoutViewModel
+
+sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
+    object Dashboard : Screen("dashboard", "Accueil", Icons.Default.Home)
+    object Program : Screen("program", "Programme", Icons.Default.List)
+    object Measurement : Screen("measurement", "Mensurations", Icons.Default.Straighten)
+    object Settings : Screen("settings", "Réglages", Icons.Default.Settings)
+    object Workout : Screen("workout/{day}", "Séance", Icons.Default.FitnessCenter)
+}
+
+val bottomNavItems = listOf(Screen.Dashboard, Screen.Program, Screen.Measurement, Screen.Settings)
+
+class MainActivity : ComponentActivity() {
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val app = application as MuscuApplication
+        val repository = app.repository
+        val appSettingsRepository = app.appSettingsRepository
+        setContent {
+            MuscuTheme {
+                MuscuApp(repository, appSettingsRepository)
+            }
+        }
+    }
+}
+
+@Composable
+fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRepository) {
+    val navController = rememberNavController()
+
+    Scaffold(
+        bottomBar = {
+            NavigationBar {
+                val navBackStackEntry by navController.currentBackStackEntryAsState()
+                val currentDestination = navBackStackEntry?.destination
+                bottomNavItems.forEach { screen ->
+                    NavigationBarItem(
+                        icon = { Icon(screen.icon, contentDescription = screen.label) },
+                        label = { Text(screen.label) },
+                        selected = currentDestination?.hierarchy?.any { it.route == screen.route } == true,
+                        onClick = {
+                            navController.navigate(screen.route) {
+                                popUpTo(navController.graph.findStartDestination().id) {
+                                    saveState = true
+                                }
+                                launchSingleTop = true
+                                restoreState = true
+                            }
+                        }
+                    )
+                }
+            }
+        }
+    ) { innerPadding ->
+        NavHost(
+            navController = navController,
+            startDestination = Screen.Dashboard.route,
+            modifier = Modifier.padding(innerPadding)
+        ) {
+            composable(Screen.Dashboard.route) {
+                val viewModel: DashboardViewModel = viewModel(factory = DashboardViewModel.Factory(repository, appSettingsRepository))
+                DashboardScreen(
+                    viewModel = viewModel,
+                    onStartWorkout = { day ->
+                        navController.navigate("workout/$day")
+                    }
+                )
+            }
+            composable(Screen.Program.route) {
+                val viewModel: ProgramViewModel = viewModel(factory = ProgramViewModel.Factory(repository, appSettingsRepository))
+                ProgramScreen(
+                    viewModel = viewModel,
+                    onStartWorkout = { day ->
+                        navController.navigate("workout/$day")
+                    }
+                )
+            }
+            composable(Screen.Measurement.route) {
+                val viewModel: MeasurementViewModel = viewModel(factory = MeasurementViewModel.Factory(repository, appSettingsRepository))
+                MeasurementScreen(
+                    viewModel = viewModel,
+                    onNavigateToHistory = { navController.navigate("measurement_history") }
+                )
+            }
+            composable("measurement_history") {
+                val viewModel: MeasurementViewModel = viewModel(factory = MeasurementViewModel.Factory(repository, appSettingsRepository))
+                MeasurementHistoryScreen(
+                    viewModel = viewModel,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable(Screen.Settings.route) {
+                val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory(repository, appSettingsRepository))
+                SettingsScreen(viewModel = viewModel)
+            }
+            composable("workout/{day}") { backStackEntry ->
+                val day = backStackEntry.arguments?.getString("day")?.toIntOrNull() ?: 2
+                val viewModel: WorkoutViewModel = viewModel(factory = WorkoutViewModel.Factory(repository, appSettingsRepository))
+                WorkoutScreen(
+                    viewModel = viewModel,
+                    dayOfWeek = day,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+        }
+    }
+}

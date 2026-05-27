@@ -1,0 +1,146 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp"
+    android:height="600dp"
+    android:viewportWidth="300"
+    android:viewportHeight="600">
+
+    <!-- Silhouette corporelle -->
+    <path
+        android:fillColor="#E0E0E0"
+        android:pathData="M150,35
+            C172,35 186,52 186,72
+            C186,92 172,108 150,108
+            C128,108 114,92 114,72
+            C114,52 128,35 150,35Z" />
+
+    <!-- Cou -->
+    <path
+        android:fillColor="#BDBDBD"
+        android:pathData="M130,106 L124,132 L176,132 L170,106Z" />
+
+    <!-- Torse -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M105,132
+            L80,150 L68,175 L64,205
+            L68,240 L72,275 L76,310
+            L80,340 L105,352 L195,352
+            L220,340 L224,310 L228,275
+            L232,240 L236,205 L232,175
+            L220,150 L195,132Z" />
+
+    <!-- Épaules -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M105,132 L62,145 L55,162 L68,168 L105,152Z" />
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M195,132 L238,145 L245,162 L232,168 L195,152Z" />
+
+    <!-- Bras -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M55,162 L30,192 L22,228 L26,240 L42,222 L55,192 L62,168Z" />
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M245,162 L270,192 L278,228 L274,240 L258,222 L245,192 L238,168Z" />
+
+    <!-- Avant-bras -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M22,228 L14,270 L12,305 L22,312 L34,305 L38,270 L42,240 L26,240Z" />
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M278,228 L286,270 L288,305 L278,312 L266,305 L262,270 L258,240 L274,240Z" />
+
+    <!-- Mains -->
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M8,305 L4,322 L8,332 L24,332 L30,322 L26,312 L22,312Z" />
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M292,305 L296,322 L292,332 L276,332 L270,322 L274,312 L278,312Z" />
+
+    <!-- Hanches -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M80,340 L74,370 L72,395 L80,408
+            L105,414 L195,414 L220,408 L228,395
+            L226,370 L220,340Z" />
+
+    <!-- Cuisse gauche -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M78,408 L68,455 L62,500 L58,530
+            L70,536 L82,530 L86,500 L94,455 L100,420 L105,414Z" />
+
+    <!-- Cuisse droite -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M222,408 L232,455 L238,500 L242,530
+            L230,536 L218,530 L214,500 L206,455 L200,420 L195,414Z" />
+
+    <!-- Mollet gauche -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M58,530 L54,560 L50,585 L58,594
+            L70,594 L80,585 L76,560 L70,536Z" />
+
+    <!-- Mollet droit -->
+    <path
+        android:fillColor="#D6D6D6"
+        android:pathData="M242,530 L246,560 L250,585 L242,594
+            L230,594 L220,585 L224,560 L230,536Z" />
+
+    <!-- Pied gauche -->
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M46,590 L30,596 L24,608 L30,618
+            L50,618 L66,608 L62,596 L58,594Z" />
+
+    <!-- Pied droit -->
+    <path
+        android:fillColor="#9E9E9E"
+        android:pathData="M254,590 L270,596 L276,608 L270,618
+            L250,618 L234,608 L238,596 L242,594Z" />
+
+    <!-- === POINTS DE MESURE AVEC CONTRASTE === -->
+
+    <!-- Poitrine -->
+    <path android:fillColor="#FFFFFF" android:pathData="M150,188 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0" />
+    <path android:fillColor="#E53935" android:pathData="M150,188 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0" />
+    <path android:strokeColor="#E53935" android:strokeWidth="2.5" android:pathData="M150,202 L150,225 L200,225" />
+    <path android:fillColor="#E53935" android:pathData="M204,218 L218,225 L204,232 Z" />
+
+    <!-- Bras -->
+    <path android:fillColor="#FFFFFF" android:pathData="M274,240 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0" />
+    <path android:fillColor="#1E88E5" android:pathData="M274,240 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0" />
+    <path android:strokeColor="#1E88E5" android:strokeWidth="2.5" android:pathData="M274,254 L274,280 L248,280" />
+    <path android:fillColor="#1E88E5" android:pathData="M244,273 L258,280 L244,287 Z" />
+
+    <!-- Taille -->
+    <path android:fillColor="#FFFFFF" android:pathData="M150,292 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0" />
+    <path android:fillColor="#FDD835" android:pathData="M150,292 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0" />
+    <path android:strokeColor="#FDD835" android:strokeWidth="2.5" android:pathData="M150,306 L150,330 L200,330" />
+    <path android:fillColor="#FDD835" android:pathData="M204,323 L218,330 L204,337 Z" />
+
+    <!-- Hanches -->
+    <path android:fillColor="#FFFFFF" android:pathData="M210,376 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0" />
+    <path android:fillColor="#43A047" android:pathData="M210,376 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0" />
+    <path android:strokeColor="#43A047" android:strokeWidth="2.5" android:pathData="M210,390 L210,416 L248,416" />
+    <path android:fillColor="#43A047" android:pathData="M252,409 L266,416 L252,423 Z" />
+
+    <!-- Cuisse -->
+    <path android:fillColor="#FFFFFF" android:pathData="M230,464 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0" />
+    <path android:fillColor="#FB8C00" android:pathData="M230,464 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0" />
+    <path android:strokeColor="#FB8C00" android:strokeWidth="2.5" android:pathData="M230,478 L230,504 L248,504" />
+    <path android:fillColor="#FB8C00" android:pathData="M252,497 L266,504 L252,511 Z" />
+
+    <!-- Mollet -->
+    <path android:fillColor="#FFFFFF" android:pathData="M236,558 m-14,0 a14,14 0 1,1 28,0 a14,14 0 1,1 -28,0" />
+    <path android:fillColor="#8E24AA" android:pathData="M236,558 m-10,0 a10,10 0 1,1 20,0 a10,10 0 1,1 -20,0" />
+    <path android:strokeColor="#8E24AA" android:strokeWidth="2.5" android:pathData="M236,572 L236,598 L248,598" />
+    <path android:fillColor="#8E24AA" android:pathData="M252,591 L266,598 L252,605 Z" />
+
+</vector>
