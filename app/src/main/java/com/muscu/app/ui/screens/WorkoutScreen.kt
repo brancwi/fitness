@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
@@ -18,6 +19,7 @@ import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.SkipNext
+import androidx.compose.material.icons.filled.Star
 import androidx.compose.material.icons.filled.Timer
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
@@ -42,6 +44,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
@@ -73,7 +76,6 @@ fun WorkoutScreen(
     onExerciseInfo: (String, String) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.uiState.collectAsState()
-    var showFinishDialog by remember { mutableStateOf(false) }
 
     LaunchedEffect(dayOfWeek) {
         viewModel.loadDay(dayOfWeek)
@@ -112,7 +114,7 @@ fun WorkoutScreen(
             if (state.exercises.isEmpty()) {
                 Text("Chargement...", modifier = Modifier.testTag("workout_loading"))
             } else if (state.allCompleted) {
-                WorkoutCompletedCard(onBack = onBack)
+                WorkoutCompletedCard(viewModel = viewModel, onBack = onBack)
             } else {
                 ProgressHeader(state)
 
@@ -183,22 +185,7 @@ fun WorkoutScreen(
         }
     }
 
-    if (showFinishDialog) {
-        AlertDialog(
-            onDismissRequest = { showFinishDialog = false },
-            title = { Text("Séance terminée") },
-            text = { Text("Bravo ! Ta séance est enregistrée.") },
-            confirmButton = {
-                TextButton(onClick = {
-                    viewModel.finishSession()
-                    showFinishDialog = false
-                    onBack()
-                }) {
-                    Text("OK")
-                }
-            }
-        )
-    }
+
 }
 
 @Composable
@@ -212,7 +199,16 @@ private fun ProgressHeader(state: WorkoutUiState) {
 }
 
 @Composable
-private fun WorkoutCompletedCard(onBack: () -> Unit) {
+private fun WorkoutCompletedCard(
+    viewModel: WorkoutViewModel,
+    onBack: () -> Unit
+) {
+    var overallRating by remember { mutableStateOf(0) }
+    var energyLevel by remember { mutableStateOf(0) }
+    var perceivedEffort by remember { mutableStateOf(5) }
+    var notes by remember { mutableStateOf("") }
+    var saved by remember { mutableStateOf(false) }
+
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp)
@@ -233,9 +229,93 @@ private fun WorkoutCompletedCard(onBack: () -> Unit) {
                 style = MaterialTheme.typography.headlineSmall,
                 fontWeight = FontWeight.Bold
             )
-            Spacer(Modifier.height(16.dp))
-            Button(onClick = onBack, modifier = Modifier.fillMaxWidth()) {
-                Text("Retour au tableau de bord")
+            Spacer(Modifier.height(24.dp))
+
+            // Note globale
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("Note globale", modifier = Modifier.weight(1f))
+                Row {
+                    (1..5).forEach { star ->
+                        IconButton(
+                            onClick = { overallRating = star },
+                            modifier = Modifier.size(36.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Star,
+                                contentDescription = null,
+                                tint = if (star <= overallRating) Color(0xFFFFC107) else MaterialTheme.colorScheme.outline
+                            )
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+
+            // Énergie
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Text("Niveau d'énergie", modifier = Modifier.weight(1f))
+                Row {
+                    (1..5).forEach { star ->
+                        IconButton(
+                            onClick = { energyLevel = star },
+                            modifier = Modifier.size(36.dp)
+                        ) {
+                            Icon(
+                                Icons.Default.Star,
+                                contentDescription = null,
+                                tint = if (star <= energyLevel) Color(0xFF4CAF50) else MaterialTheme.colorScheme.outline
+                            )
+                        }
+                    }
+                }
+            }
+            Spacer(Modifier.height(12.dp))
+
+            // Effort perçu (RPE)
+            Column(modifier = Modifier.fillMaxWidth()) {
+                Text("Effort perçu (RPE) : $perceivedEffort / 10")
+                Slider(
+                    value = perceivedEffort.toFloat(),
+                    onValueChange = { perceivedEffort = it.toInt() },
+                    valueRange = 1f..10f,
+                    steps = 8
+                )
+            }
+            Spacer(Modifier.height(12.dp))
+
+            // Notes
+            OutlinedTextField(
+                value = notes,
+                onValueChange = { notes = it },
+                label = { Text("Notes / ressentis") },
+                modifier = Modifier.fillMaxWidth(),
+                minLines = 2,
+                maxLines = 4
+            )
+
+            Spacer(Modifier.height(20.dp))
+
+            if (!saved) {
+                Button(
+                    onClick = {
+                        viewModel.saveSessionFeedback(
+                            overallRating.coerceAtLeast(1),
+                            energyLevel.coerceAtLeast(1),
+                            perceivedEffort,
+                            notes
+                        )
+                        viewModel.finishSession()
+                        saved = true
+                    },
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = overallRating > 0 && energyLevel > 0
+                ) {
+                    Text("Enregistrer le feedback")
+                }
+            } else {
+                Button(onClick = onBack, modifier = Modifier.fillMaxWidth()) {
+                    Text("Retour au tableau de bord")
+                }
             }
         }
     }

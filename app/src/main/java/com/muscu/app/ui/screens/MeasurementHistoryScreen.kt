@@ -1,8 +1,10 @@
 package com.muscu.app.ui.screens
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -17,6 +19,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
@@ -34,7 +37,9 @@ fun MeasurementHistoryScreen(
     onBack: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
-    val selectedMetric = remember { mutableStateOf(MeasurementMetric.WEIGHT) }
+    val selectedMetrics = remember {
+        mutableStateOf(setOf(MeasurementMetric.WEIGHT, MeasurementMetric.BODY_FAT))
+    }
 
     Scaffold(
         topBar = {
@@ -56,26 +61,37 @@ fun MeasurementHistoryScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(16.dp)
         ) {
-            // Sélecteur de métrique
-            Text("Métrique", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
+            // Sélecteur de métrique (multi-select)
+            Text("Métriques", style = MaterialTheme.typography.titleMedium, fontWeight = FontWeight.Bold)
             MeasurementMetricSelector(
-                selected = selectedMetric.value,
-                onSelect = { selectedMetric.value = it }
+                selected = selectedMetrics.value,
+                onToggle = { metric ->
+                    selectedMetrics.value = selectedMetrics.value.toMutableSet().apply {
+                        if (contains(metric)) {
+                            if (size > 1) remove(metric)
+                        } else {
+                            add(metric)
+                        }
+                    }
+                }
             )
 
             // Graphique
             Card(modifier = Modifier.fillMaxWidth(), elevation = CardDefaults.cardElevation(4.dp)) {
                 Column(modifier = Modifier.padding(16.dp)) {
                     Text(
-                        "${selectedMetric.value.label} (${selectedMetric.value.unit})",
+                        "Évolution",
                         style = MaterialTheme.typography.titleSmall,
                         fontWeight = FontWeight.Bold
                     )
                     Spacer(Modifier.height(8.dp))
                     MeasurementHistoryChart(
                         measurements = state.measurements,
-                        metric = selectedMetric.value
+                        metrics = selectedMetrics.value.toList()
                     )
+                    Spacer(Modifier.height(12.dp))
+                    // Légende
+                    MeasurementLegend(metrics = selectedMetrics.value.toList())
                 }
             }
 
@@ -102,8 +118,8 @@ fun MeasurementHistoryScreen(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 private fun MeasurementMetricSelector(
-    selected: MeasurementMetric,
-    onSelect: (MeasurementMetric) -> Unit
+    selected: Set<MeasurementMetric>,
+    onToggle: (MeasurementMetric) -> Unit
 ) {
     val metrics = listOf(
         MeasurementMetric.WEIGHT,
@@ -123,16 +139,53 @@ private fun MeasurementMetricSelector(
         verticalArrangement = Arrangement.spacedBy(8.dp)
     ) {
         metrics.forEach { metric ->
-            val isSelected = metric == selected
+            val isSelected = metric in selected
             FilterChip(
                 selected = isSelected,
-                onClick = { onSelect(metric) },
+                onClick = { onToggle(metric) },
                 label = { Text(metric.label) },
+                leadingIcon = if (isSelected) {
+                    {
+                        Box(
+                            modifier = Modifier
+                                .size(10.dp)
+                                .clip(CircleShape)
+                                .background(metric.color)
+                        )
+                    }
+                } else null,
                 colors = FilterChipDefaults.filterChipColors(
                     selectedContainerColor = MaterialTheme.colorScheme.primaryContainer,
                     selectedLabelColor = MaterialTheme.colorScheme.onPrimaryContainer
                 )
             )
+        }
+    }
+}
+
+@OptIn(ExperimentalLayoutApi::class)
+@Composable
+private fun MeasurementLegend(metrics: List<MeasurementMetric>) {
+    FlowRow(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(12.dp),
+        verticalArrangement = Arrangement.spacedBy(4.dp)
+    ) {
+        metrics.forEach { metric ->
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                Box(
+                    modifier = Modifier
+                        .size(10.dp)
+                        .clip(CircleShape)
+                        .background(metric.color)
+                )
+                Spacer(Modifier.width(4.dp))
+                Text(
+                    text = "${metric.label} (${metric.unit})",
+                    style = MaterialTheme.typography.labelSmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant
+                )
+            }
         }
     }
 }

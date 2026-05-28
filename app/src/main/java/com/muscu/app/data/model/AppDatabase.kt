@@ -5,6 +5,9 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 
 @Database(
     entities = [
@@ -15,7 +18,7 @@ import androidx.room.TypeConverters
         Measurement::class,
         AppSettings::class
     ],
-    version = 10,
+    version = 13,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
@@ -30,6 +33,7 @@ abstract class AppDatabase : RoomDatabase() {
     companion object {
         @Volatile
         private var INSTANCE: AppDatabase? = null
+        private var hasSeeded = false
 
         fun getDatabase(context: Context): AppDatabase {
             return INSTANCE ?: synchronized(this) {
@@ -38,9 +42,21 @@ abstract class AppDatabase : RoomDatabase() {
                     AppDatabase::class.java,
                     "muscu_database"
                 )
-                    .fallbackToDestructiveMigration()
+                    .addMigrations(*Migrations.ALL)
                     .build()
                 INSTANCE = instance
+
+                // Seed demo measurements once after DB creation
+                if (!hasSeeded) {
+                    hasSeeded = true
+                    GlobalScope.launch(Dispatchers.IO) {
+                        // Only seed if table is empty
+                        if (instance.measurementDao().getLatestMeasurement() == null) {
+                            DatabaseSeeder.seedMeasurements(instance.measurementDao())
+                        }
+                    }
+                }
+
                 instance
             }
         }

@@ -32,12 +32,6 @@ class AppSettingsRepository(private val dao: AppSettingsDao) {
         }
     }
 
-    fun lumbarRules(): Flow<List<String>> = settings.map { s ->
-        JSONArray(s.lumbarRulesJson).let { arr ->
-            List(arr.length()) { arr.getString(it) }
-        }
-    }
-
     suspend fun getLatest(): AppSettings = settings.firstOrNull() ?: AppSettings()
 
     suspend fun updateWorkoutDays(days: List<Int>, names: Map<Int, String>) {
@@ -69,11 +63,6 @@ class AppSettingsRepository(private val dao: AppSettingsDao) {
             finalBeepDurationMs = finalBeepMs,
             toneVolume = volume
         ))
-    }
-
-    suspend fun updateLumbarRules(rules: List<String>) {
-        val current = getLatest()
-        dao.update(current.copy(lumbarRulesJson = JSONArray(rules).toString()))
     }
 
     suspend fun updateAutoStart(enabled: Boolean) {

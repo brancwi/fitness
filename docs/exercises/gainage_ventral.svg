@@ -30,11 +30,11 @@
   <text x="25" y="275" fill="#FF6B35" font-size="10" font-weight="bold" font-family="sans-serif">▬ MUSCLES</text>
     <text x="25" y="290" fill="#FF6B35" font-size="9" font-family="sans-serif">▬ Transverse</text>
   <text x="25" y="305" fill="#42A5F5" font-size="9" font-family="sans-serif">▬ Rectus abdominis</text>
-  <text x="25" y="320" fill="#66BB6A" font-size="9" font-family="sans-serif">▬ Lombaires</text>
+  <text x="25" y="320" fill="#66BB6A" font-size="9" font-family="sans-serif">▬ Érecteurs</text>
 
   <!-- Vigilance -->
   <rect x="195" y="258" width="185" height="52" rx="8" fill="#2A1A1A" stroke="#FF6B35" stroke-width="1.2"/>
   <text x="208" y="272" fill="#FF6B35" font-size="10" font-weight="bold" font-family="sans-serif">⚠ VIGILANCE</text>
     <text x="208" y="288" fill="#CCC" font-size="9" font-family="sans-serif">Ne creuse pas le dos</text>
-  <text x="208" y="290" fill="#CCC" font-size="9" font-family="sans-serif">Arrête si douleur lombaire</text>
+  <text x="208" y="290" fill="#CCC" font-size="9" font-family="sans-serif">Arrête en cas de douleur</text>
 </svg>

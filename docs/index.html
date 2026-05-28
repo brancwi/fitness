@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Muscu App — Installation</title>
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 100%);
+            color: #eee;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 24px;
+        }
+        .container {
+            max-width: 480px;
+            width: 100%;
+            text-align: center;
+        }
+        h1 { font-size: 2rem; margin-bottom: 8px; color: #fff; }
+        p.subtitle { color: #aaa; margin-bottom: 32px; font-size: 1rem; }
+        .card {
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 16px;
+            padding: 32px;
+            margin-bottom: 24px;
+        }
+        .qr-container {
+            background: #fff;
+            padding: 16px;
+            border-radius: 12px;
+            display: inline-block;
+            margin-bottom: 16px;
+        }
+        .qr-container img { width: 180px; height: 180px; display: block; }
+        .btn {
+            display: inline-block;
+            background: #4CAF50;
+            color: #fff;
+            text-decoration: none;
+            padding: 14px 28px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.1rem;
+            transition: background 0.2s, transform 0.1s;
+            margin-top: 8px;
+        }
+        .btn:hover { background: #45a049; transform: translateY(-1px); }
+        .steps {
+            text-align: left;
+            margin-top: 24px;
+            background: rgba(255,255,255,0.03);
+            border-radius: 12px;
+            padding: 20px;
+        }
+        .steps h2 { font-size: 1.1rem; margin-bottom: 12px; color: #fff; }
+        .steps ol { padding-left: 20px; color: #ccc; }
+        .steps li { margin-bottom: 8px; line-height: 1.5; }
+        .badge {
+            display: inline-block;
+            background: #2196F3;
+            color: #fff;
+            font-size: 0.75rem;
+            padding: 4px 10px;
+            border-radius: 20px;
+            margin-bottom: 16px;
+            font-weight: 600;
+        }
+        .warning {
+            background: rgba(255,193,7,0.1);
+            border: 1px solid rgba(255,193,7,0.3);
+            color: #ffc107;
+            padding: 12px;
+            border-radius: 8px;
+            font-size: 0.9rem;
+            margin-top: 16px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="badge">APK Android</div>
+        <h1>Muscu App</h1>
+        <p class="subtitle">Suivi de musculation — banc & haltères</p>
+
+        <div class="card">
+            <div class="qr-container">
+                <img id="qr" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=https://github.com/OWNER/REPO/releases/latest/download/muscu-app.apk" alt="QR Code">
+            </div>
+            <br>
+            <a id="downloadBtn" class="btn" href="https://github.com/OWNER/REPO/releases/latest/download/muscu-app.apk">📥 Télécharger l'APK</a>
+        </div>
+
+        <div class="steps">
+            <h2>📲 Installation</h2>
+            <ol>
+                <li>Télécharge l'APK via le bouton ci-dessus ou scanne le QR code.</li>
+                <li>Ouvre le fichier téléchargé sur ton téléphone.</li>
+                <li>Si demandé, autorise l'installation depuis ce navigateur/fichier.</li>
+                <li>L'application s'installe par-dessus l'ancienne version sans perdre tes données.</li>
+            </ol>
+            <div class="warning">
+                ⚠️ Pour les mises à jour, réinstalle simplement le nouvel APK. Ta base de données (historique, séances, mensurations) est conservée automatiquement.
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Auto-detect owner/repo from current GitHub Pages URL
+        const pathParts = location.hostname.split('.');
+        if (pathParts.length >= 3 && pathParts[1] === 'github' && pathParts[2] === 'io') {
+            const owner = pathParts[0];
+            // repo name is the first path segment
+            const repo = location.pathname.split('/')[1] || 'REPO';
+            const apkUrl = `https://github.com/${owner}/${repo}/releases/latest/download/muscu-app.apk`;
+            document.getElementById('downloadBtn').href = apkUrl;
+            document.getElementById('qr').src = `https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=${encodeURIComponent(apkUrl)}`;
+        }
+    </script>
+</body>
+</html>

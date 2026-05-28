@@ -24,7 +24,6 @@ data class SettingsUiState(
     val beepDurationMs: String = "200",
     val finalBeepDurationMs: String = "400",
     val toneVolume: String = "100",
-    val lumbarRulesText: String = "",
     val advancedSaved: Boolean = false,
     // Workout automation
     val autoStartNextSet: Boolean = true,
@@ -71,7 +70,6 @@ class SettingsViewModel(
                     beepDurationMs = settings.beepDurationMs.toString(),
                     finalBeepDurationMs = settings.finalBeepDurationMs.toString(),
                     toneVolume = settings.toneVolume.toString(),
-                    lumbarRulesText = settings.lumbarRulesJson,
                     autoStartNextSet = settings.autoStartNextSet,
                     autoFillRepsWeight = settings.autoFillRepsWeight,
                     defaultReps = settings.defaultReps.toString(),
@@ -115,8 +113,6 @@ class SettingsViewModel(
     fun updateBeepDuration(value: String) { _uiState.value = _uiState.value.copy(beepDurationMs = value, advancedSaved = false) }
     fun updateFinalBeepDuration(value: String) { _uiState.value = _uiState.value.copy(finalBeepDurationMs = value, advancedSaved = false) }
     fun updateToneVolume(value: String) { _uiState.value = _uiState.value.copy(toneVolume = value, advancedSaved = false) }
-    fun updateLumbarRules(value: String) { _uiState.value = _uiState.value.copy(lumbarRulesText = value, advancedSaved = false) }
-
     fun saveAdvanced() {
         viewModelScope.launch {
             val s = _uiState.value
@@ -134,10 +130,6 @@ class SettingsViewModel(
                 finalBeepMs = s.finalBeepDurationMs.toIntOrNull() ?: 400,
                 volume = s.toneVolume.toIntOrNull() ?: 100
             )
-            val rules = s.lumbarRulesText.lines().filter { it.isNotBlank() }
-            if (rules.isNotEmpty()) {
-                appSettingsRepository.updateLumbarRules(rules)
-            }
             _uiState.value = s.copy(advancedSaved = true)
         }
     }

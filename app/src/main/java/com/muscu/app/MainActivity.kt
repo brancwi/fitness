@@ -16,6 +16,8 @@ import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -30,6 +32,7 @@ import com.muscu.app.data.repository.AppSettingsRepository
 import com.muscu.app.data.repository.WorkoutRepository
 import com.muscu.app.ui.screens.DashboardScreen
 import com.muscu.app.ui.screens.ExerciseDetailScreen
+import com.muscu.app.ui.screens.ExercisePerformanceScreen
 import com.muscu.app.ui.screens.MeasurementHistoryScreen
 import com.muscu.app.ui.screens.MeasurementScreen
 import com.muscu.app.ui.screens.ProgramScreen
@@ -37,6 +40,7 @@ import com.muscu.app.ui.screens.SettingsScreen
 import com.muscu.app.ui.screens.WorkoutScreen
 import com.muscu.app.ui.theme.MuscuTheme
 import com.muscu.app.viewmodel.DashboardViewModel
+import com.muscu.app.viewmodel.ExercisePerformanceViewModel
 import com.muscu.app.viewmodel.MeasurementViewModel
 import com.muscu.app.viewmodel.ProgramViewModel
 import com.muscu.app.viewmodel.SettingsViewModel
@@ -159,8 +163,29 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                 ExerciseDetailScreen(
                     exerciseId = exId,
                     exerciseName = exName,
+                    onBack = { navController.popBackStack() },
+                    onViewHistory = { id, name ->
+                        navController.navigate("exercise_performance/$id/${java.net.URLEncoder.encode(name, "UTF-8")}")
+                    }
+                )
+            }
+            composable("exercise_performance/{exerciseId}/{exerciseName}") { backStackEntry ->
+                val exId = backStackEntry.arguments?.getString("exerciseId") ?: ""
+                val exName = java.net.URLDecoder.decode(
+                    backStackEntry.arguments?.getString("exerciseName") ?: "",
+                    "UTF-8"
+                )
+                val viewModel: ExercisePerformanceViewModel = viewModel(
+                    factory = ExercisePerformanceViewModel.Factory(repository)
+                )
+                ExercisePerformanceScreen(
+                    exerciseName = exName,
+                    history = viewModel.uiState.collectAsState().value.history,
                     onBack = { navController.popBackStack() }
                 )
+                LaunchedEffect(exId) {
+                    viewModel.loadHistory(exId)
+                }
             }
         }
     }

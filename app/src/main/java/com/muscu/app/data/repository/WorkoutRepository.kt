@@ -4,6 +4,7 @@ import com.muscu.app.data.model.AppDatabase
 import com.muscu.app.data.model.Exercise
 import com.muscu.app.data.model.Measurement
 import com.muscu.app.data.model.PerformedSet
+import com.muscu.app.data.model.PerformedSetWithDate
 import com.muscu.app.data.model.UserProfile
 import com.muscu.app.data.model.WorkoutSession
 import kotlinx.coroutines.flow.Flow
@@ -38,6 +39,12 @@ class WorkoutRepository(db: AppDatabase, appSettingsRepository: AppSettingsRepos
         setRepository.ensureSetsForExercise(sessionId, exercise)
 
     suspend fun updateSet(set: PerformedSet) = setRepository.update(set)
+
+    suspend fun getLastCompletedSetForExercise(exerciseId: String): PerformedSet? =
+        setRepository.getLastCompletedSetForExercise(exerciseId)
+
+    suspend fun getPerformanceHistoryForExercise(exerciseId: String): List<PerformedSetWithDate> =
+        setRepository.getPerformanceHistory(exerciseId)
 
     // ── User Profile ──
     fun getUserProfile(): Flow<UserProfile?> = profileRepository.getProfile()

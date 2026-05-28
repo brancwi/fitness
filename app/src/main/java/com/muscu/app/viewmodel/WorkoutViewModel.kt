@@ -133,28 +133,12 @@ class WorkoutViewModel(
         val currentSet = sets.getOrNull(state.currentSetIndex) ?: return
         val settings = state.settings ?: return
 
-        // Pré-remplissage reps/poids
-        val (reps, weight) = if (settings.autoFillRepsWeight) {
-            val prevSet = sets.getOrNull(state.currentSetIndex - 1)
-            when {
-                prevSet?.reps != null && prevSet.weightKg != null -> {
-                    Pair(prevSet.reps.toString(), prevSet.weightKg.toString())
-                }
-                currentSet.reps != null && currentSet.weightKg != null -> {
-                    Pair(currentSet.reps.toString(), currentSet.weightKg.toString())
-                }
-                else -> Pair(settings.defaultReps.toString(), settings.defaultWeightKg.toString())
-            }
-        } else {
-            Pair(currentSet.reps?.toString() ?: "", currentSet.weightKg?.toString() ?: "")
-        }
-
         val analysis = TempoAnalyzer.analyze(settings, exercise.targetRepsMax)
 
         _uiState.value = _uiState.value.copy(
             showSetCompleteButton = true,
-            prefilledReps = reps,
-            prefilledWeight = weight,
+            prefilledReps = currentSet.reps?.toString() ?: "",
+            prefilledWeight = currentSet.weightKg?.toString() ?: "",
             tempoAnalysis = analysis,
             prepCountdown = settings.prepCountdownSeconds
         )
@@ -305,6 +289,20 @@ class WorkoutViewModel(
             val session = _uiState.value.session ?: return@launch
             repository.updateSession(session.copy(isCompleted = true))
             _uiState.value = _uiState.value.copy(allCompleted = true)
+        }
+    }
+
+    fun saveSessionFeedback(overallRating: Int, energyLevel: Int, perceivedEffort: Int, notes: String) {
+        viewModelScope.launch {
+            val session = _uiState.value.session ?: return@launch
+            val updated = session.copy(
+                overallRating = overallRating,
+                energyLevel = energyLevel,
+                perceivedEffort = perceivedEffort,
+                sessionNotes = notes.takeIf { it.isNotBlank() }
+            )
+            repository.updateSession(updated)
+            _uiState.value = _uiState.value.copy(session = updated)
         }
     }
 

@@ -259,17 +259,6 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 }
 
                 Spacer(Modifier.height(12.dp))
-                Text("Règles lombaires (une par ligne)", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
-                Spacer(Modifier.height(8.dp))
-                OutlinedTextField(
-                    value = state.lumbarRulesText,
-                    onValueChange = viewModel::updateLumbarRules,
-                    label = { Text("Règles") },
-                    modifier = Modifier.fillMaxWidth().height(120.dp),
-                    maxLines = 5
-                )
-
-                Spacer(Modifier.height(12.dp))
                 Button(onClick = viewModel::saveAdvanced, modifier = Modifier.fillMaxWidth()) {
                     Text("Enregistrer paramètres avancés")
                 }
@@ -287,7 +276,7 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Spacer(Modifier.height(8.dp))
                 Text("Programme adapté à ton matériel : banc + haltères.")
                 Spacer(Modifier.height(4.dp))
-                Text("Contrainte lombaire T12 intégrée dans les exercices et les rappels.")
+                Text("Suivi de force, mensurations et feedback de séance.")
             }
         }
     }

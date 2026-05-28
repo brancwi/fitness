@@ -29,9 +29,6 @@ data class AppSettings(
     val finalBeepDurationMs: Int = 400,
     val toneVolume: Int = 100,
 
-    // Lumbar rules (JSON array of strings)
-    val lumbarRulesJson: String = "[\"Pas de squat lourd\",\"Pas de soulevé de terre\",\"Pas de développé militaire debout lourd\",\"Bench et rowing sûrs (colonne soutenue)\",\"Fentes : haltères légers, sans rebond\"]",
-
     // Default protein target (grams)
     val defaultProteinTargetGrams: Int = 150,
 

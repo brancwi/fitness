@@ -23,7 +23,11 @@ data class WorkoutSession(
     @PrimaryKey val id: String,
     val dayOfWeek: Int,
     val dateTimestamp: Long,
-    val isCompleted: Boolean = false
+    val isCompleted: Boolean = false,
+    val overallRating: Int? = null,
+    val energyLevel: Int? = null,
+    val perceivedEffort: Int? = null,
+    val sessionNotes: String? = null
 )
 
 @Entity(tableName = "performed_sets")

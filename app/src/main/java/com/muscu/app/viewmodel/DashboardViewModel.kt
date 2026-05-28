@@ -15,8 +15,7 @@ data class DashboardUiState(
     val nextWorkoutDay: String = "",
     val nextWorkoutDayIndex: Int = 2,
     val hasActiveSession: Boolean = false,
-    val activeSessionDay: Int? = null,
-    val lumbarRules: List<String> = emptyList()
+    val activeSessionDay: Int? = null
 )
 
 class DashboardViewModel(
@@ -39,13 +38,11 @@ class DashboardViewModel(
         viewModelScope.launch {
             val days = appSettingsRepository.workoutDays().first()
             val names = appSettingsRepository.dayNames().first()
-            val rules = appSettingsRepository.lumbarRules().first()
             val (nextDay, dayName) = NextWorkoutDayCalculator.calculate(days, names)
 
             _uiState.value = DashboardUiState(
                 nextWorkoutDay = dayName,
-                nextWorkoutDayIndex = nextDay,
-                lumbarRules = rules
+                nextWorkoutDayIndex = nextDay
             )
         }
     }

@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -24,29 +25,24 @@ import kotlin.math.max
 @Composable
 fun MeasurementHistoryChart(
     measurements: List<Measurement>,
-    metric: MeasurementMetric,
+    metrics: List<MeasurementMetric>,
     modifier: Modifier = Modifier
 ) {
-    if (measurements.size < 2) {
+    val sorted = remember(measurements) { measurements.sortedBy { it.dateTimestamp } }
+    if (sorted.size < 2 || metrics.isEmpty()) {
         Box(modifier = modifier.fillMaxWidth().height(200.dp), contentAlignment = Alignment.Center) {
             Text("Pas assez de données pour afficher le graphique")
         }
         return
     }
 
-    val values = measurements.map { metric.extract(it) }
-    val minVal = values.minOrNull() ?: 0f
-    val maxVal = values.maxOrNull() ?: 1f
-    val range = max(maxVal - minVal, 0.01f)
-
-    val primaryColor = MaterialTheme.colorScheme.primary
     val onSurfaceVariant = MaterialTheme.colorScheme.onSurfaceVariant
 
-    Box(modifier = modifier.fillMaxWidth().height(220.dp).padding(8.dp)) {
+    Box(modifier = modifier.fillMaxWidth().height(240.dp).padding(8.dp)) {
         Canvas(modifier = Modifier.fillMaxSize()) {
             val width = size.width
             val height = size.height
-            val paddingLeft = 40f
+            val paddingLeft = 8f
             val paddingBottom = 30f
             val plotWidth = width - paddingLeft - 16f
             val plotHeight = height - paddingBottom - 16f
@@ -67,66 +63,76 @@ fun MeasurementHistoryChart(
                 strokeWidth = 1f
             )
 
-            // Axe Y labels
+            // Grille horizontale (sans valeurs, car échelles mixtes)
             val ySteps = 4
             for (i in 0..ySteps) {
                 val yRatio = i.toFloat() / ySteps
-                val yVal = minVal + (1f - yRatio) * range
                 val yPos = 16f + yRatio * plotHeight
                 drawLine(
-                    color = onSurfaceVariant.copy(alpha = 0.15f),
+                    color = onSurfaceVariant.copy(alpha = 0.1f),
                     start = Offset(paddingLeft, yPos),
                     end = Offset(width - 16f, yPos),
                     strokeWidth = 1f
                 )
             }
 
-            // Path
-            val path = Path()
-            val points = values.mapIndexed { index, value ->
-                val x = paddingLeft + (index.toFloat() / (values.size - 1).coerceAtLeast(1)) * plotWidth
-                val yRatio = (value - minVal) / range
-                val y = 16f + (1f - yRatio) * plotHeight
-                Offset(x, y)
-            }
+            // Dessiner chaque métrique normalisée entre 0 et 1
+            metrics.forEach { metric ->
+                val values = sorted.map { metric.extract(it) }
+                val minVal = values.minOrNull() ?: 0f
+                val maxVal = values.maxOrNull() ?: 1f
+                val range = max(maxVal - minVal, 0.01f)
+                val color = metric.color
 
-            if (points.isNotEmpty()) {
-                path.moveTo(points[0].x, points[0].y)
-                for (i in 1 until points.size) {
-                    path.lineTo(points[i].x, points[i].y)
+                val points = values.mapIndexed { index, value ->
+                    val x = paddingLeft + (index.toFloat() / (values.size - 1).coerceAtLeast(1)) * plotWidth
+                    val yRatio = (value - minVal) / range
+                    val y = 16f + (1f - yRatio) * plotHeight
+                    Offset(x, y)
                 }
-            }
 
-            drawPath(
-                path = path,
-                color = primaryColor,
-                style = Stroke(width = 3f, cap = StrokeCap.Round)
-            )
+                // Path
+                val path = Path()
+                if (points.isNotEmpty()) {
+                    path.moveTo(points[0].x, points[0].y)
+                    for (i in 1 until points.size) {
+                        path.lineTo(points[i].x, points[i].y)
+                    }
+                }
 
-            // Points
-            points.forEach { point ->
-                drawCircle(
-                    color = Color.White,
-                    radius = 5f,
-                    center = point
+                drawPath(
+                    path = path,
+                    color = color,
+                    style = Stroke(width = 2.5f, cap = StrokeCap.Round)
                 )
-                drawCircle(
-                    color = primaryColor,
-                    radius = 5f,
-                    center = point,
-                    style = Stroke(width = 2f)
-                )
+
+                // Points
+                points.forEach { point ->
+                    drawCircle(
+                        color = Color.White,
+                        radius = 4f,
+                        center = point
+                    )
+                    drawCircle(
+                        color = color,
+                        radius = 4f,
+                        center = point,
+                        style = Stroke(width = 2f)
+                    )
+                }
             }
         }
 
-        // Labels
+        // Labels X (dates)
         val formatter = DateTimeFormatter.ofPattern("dd/MM")
         val zone = ZoneId.systemDefault()
         Row(
-            modifier = Modifier.fillMaxWidth().align(Alignment.BottomStart).padding(start = 40.dp, end = 16.dp),
+            modifier = Modifier.fillMaxWidth().align(Alignment.BottomStart).padding(start = 8.dp, end = 16.dp),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            measurements.take(3).forEach { m ->
+            listOf(sorted.firstOrNull(), sorted.getOrNull(sorted.size / 2), sorted.lastOrNull())
+                .filterNotNull()
+                .forEach { m ->
                 val dateStr = Instant.ofEpochMilli(m.dateTimestamp)
                     .atZone(zone)
                     .toLocalDate()
@@ -140,16 +146,16 @@ fun MeasurementHistoryChart(
     }
 }
 
-enum class MeasurementMetric(val label: String, val unit: String) {
-    WEIGHT("Poids", "kg"),
-    BODY_FAT("% Graisse", "%"),
-    MUSCLE("% Muscle", "%"),
-    CHEST("Poitrine", "cm"),
-    ARMS("Bras", "cm"),
-    WAIST("Taille", "cm"),
-    HIPS("Hanches", "cm"),
-    THIGH("Cuisse", "cm"),
-    CALF("Mollet", "cm");
+enum class MeasurementMetric(val label: String, val unit: String, val color: Color) {
+    WEIGHT("Poids", "kg", Color(0xFF2196F3)),
+    BODY_FAT("% Graisse", "%", Color(0xFFFF9800)),
+    MUSCLE("% Muscle", "%", Color(0xFF4CAF50)),
+    CHEST("Poitrine", "cm", Color(0xFFE91E63)),
+    ARMS("Bras", "cm", Color(0xFF9C27B0)),
+    WAIST("Taille", "cm", Color(0xFF00BCD4)),
+    HIPS("Hanches", "cm", Color(0xFF795548)),
+    THIGH("Cuisse", "cm", Color(0xFFFFEB3B)),
+    CALF("Mollet", "cm", Color(0xFF607D8B));
 
     fun extract(m: Measurement): Float = when (this) {
         WEIGHT -> m.weightKg ?: 0f

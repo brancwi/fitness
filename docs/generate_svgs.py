@@ -281,9 +281,9 @@ EXERCISES = [
             '  <text x="200" y="205" text-anchor="middle" fill="#888" font-size="9" font-family="sans-serif">CORPS EN LIGNE DROITE</text>' +
             '  <line x1="60" y1="180" x2="340" y2="180" stroke="#4A4A6A" stroke-width="1" stroke-dasharray="4 2" opacity="0.5"/>'
         ),
-        "muscles": [(290, "Transverse"), (305, "Rectus abdominis"), (320, "Lombaires")],
+        "muscles": [(290, "Transverse"), (305, "Rectus abdominis"), (320, "Érecteurs")],
         "muscles_colors": ["#FF6B35", "#42A5F5", "#66BB6A"],
-        "vigilance": [(288, "Ne creuse pas le dos"), (290, "Arrête si douleur lombaire")]
+        "vigilance": [(288, "Ne creuse pas le dos"), (290, "Arrête en cas de douleur")]
     },
 ]
 

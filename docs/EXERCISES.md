@@ -15,7 +15,7 @@
 | **Muscles** | Pectoraux majeurs, deltoïdes antérieurs, triceps |
 | **Position** | Allongé sur un banc plat, pieds au sol, haltères au-dessus des épaules |
 | **Mouvement** | Descente contrôlée jusqu'à la poitrine, puis poussée verticale |
-| **Vigilance** | Colonne soutenue : ne creuse pas le dos. Mouvement sûr pour la lombaire. |
+| **Vigilance** | Garde la colonne neutre. Ne creuse pas le dos. |
 
 ---
 
@@ -65,7 +65,7 @@
 | **Muscles** | Deltoïdes antérieurs et latéraux, triceps, trapèzes |
 | **Position** | Assis sur le banc, haltères au niveau des épaules, paumes vers l'avant |
 | **Mouvement** | Pousse les haltères verticalement jusqu'à l'extension complète des bras |
-| **Vigilance** | **Assis obligatoire** : protège la lombaire. Pas de charge lourde debout. |
+| **Vigilance** | **Assis obligatoire**. Pas de charge lourde debout. |
 
 ---
 
@@ -98,7 +98,7 @@
 
 | | |
 |:---|:---|
-| **Muscles** | Transverse de l'abdomen, rectus abdominis, obliques, lombaires |
+| **Muscles** | Transverse de l'abdomen, rectus abdominis, obliques, érecteurs du rachis |
 | **Position** | Appui sur les avant-bras et la pointe des pieds, corps en ligne droite |
 | **Mouvement** | Maintiens la position statique sans bouger (30–45 sec) |
 | **Vigilance** | **Ne creuse pas le dos** : ventre rentré, fessiers serrés. Respire normalement. |
@@ -124,10 +124,10 @@
 
 | | |
 |:---|:---|
-| **Muscles** | Dorsaux, rhomboïdes, trapèzes, biceps, lombaires |
+| **Muscles** | Dorsaux, rhomboïdes, trapèzes, biceps, érecteurs du rachis |
 | **Position** | Buste penché à ~45°, dos droit, haltères pendant sous les épaules |
 | **Mouvement** | Tire les deux haltères vers les hanches en rentrant les coudes |
-| **Vigilance** | Buste bien penché, dos droit, charge légère. Ne relâche pas les lombaires. |
+| **Vigilance** | Buste bien penché, dos droit, charge légère. Garde le dos droit. |
 
 ---
 

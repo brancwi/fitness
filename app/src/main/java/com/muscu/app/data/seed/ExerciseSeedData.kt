@@ -21,7 +21,7 @@ object ExerciseSeedData {
             targetRepsMin = 8,
             targetRepsMax = 10,
             intensity = Intensity.MODERATE,
-            warning = "Colonne soutenue : mouvement sûr pour ta lombaire.",
+            warning = "Garde la colonne neutre et contrôle le mouvement.",
             orderIndex = 0
         ),
         Exercise(
@@ -33,7 +33,7 @@ object ExerciseSeedData {
             targetRepsMin = 10,
             targetRepsMax = 10,
             intensity = Intensity.MODERATE,
-            warning = "Colonne soutenue : mouvement sûr pour ta lombaire. Alterne les bras.",
+            warning = "Garde le dos droit et alterne les bras.",
             orderIndex = 1
         ),
         Exercise(
@@ -70,7 +70,7 @@ object ExerciseSeedData {
             targetRepsMin = 8,
             targetRepsMax = 10,
             intensity = Intensity.MODERATE,
-            warning = "Assis : protège la lombaire. Pas de charge lourde debout.",
+            warning = "Assis obligatoire. Pas de charge lourde debout.",
             orderIndex = 0
         ),
         Exercise(
@@ -120,7 +120,7 @@ object ExerciseSeedData {
             targetRepsMin = 8,
             targetRepsMax = 10,
             intensity = Intensity.MODERATE,
-            warning = "Colonne soutenue : mouvement sûr pour ta lombaire.",
+            warning = "Garde la colonne neutre et contrôle le mouvement.",
             orderIndex = 0
         ),
         Exercise(

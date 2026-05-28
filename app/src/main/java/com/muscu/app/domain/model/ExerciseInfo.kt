@@ -19,7 +19,7 @@ object ExerciseInfoRepository {
             muscles = "Pectoraux majeurs, deltoïdes antérieurs, triceps",
             position = "Allongé sur un banc plat, pieds au sol, haltères au-dessus des épaules",
             movement = "Descente contrôlée jusqu'à la poitrine, puis poussée verticale",
-            vigilance = "Colonne soutenue : ne creuse pas le dos. Mouvement sûr pour la lombaire.",
+            vigilance = "Garde la colonne neutre. Ne creuse pas le dos.",
             diagramResId = R.drawable.bench_press_halteres
         ),
         ExerciseInfo(
@@ -51,7 +51,7 @@ object ExerciseInfoRepository {
             muscles = "Deltoïdes antérieurs et latéraux, triceps, trapèzes",
             position = "Assis sur le banc, haltères au niveau des épaules, paumes vers l'avant",
             movement = "Pousse les haltères verticalement jusqu'à l'extension complète des bras",
-            vigilance = "Assis obligatoire : protège la lombaire. Pas de charge lourde debout.",
+            vigilance = "Assis obligatoire. Pas de charge lourde debout.",
             diagramResId = R.drawable.developpe_militaire_assis
         ),
         ExerciseInfo(
@@ -75,7 +75,7 @@ object ExerciseInfoRepository {
             muscles = "Transverse de l'abdomen, obliques, rectus abdominis, érecteurs du rachis",
             position = "Appui sur les avant-bras et les pointes de pieds, corps en ligne droite",
             movement = "Maintiens la position sans creuser ni bomber le dos, respire normalement",
-            vigilance = "Tiens la position sans creuser le dos. Arrête si douleur lombaire.",
+            vigilance = "Tiens la position sans creuser le dos. Arrête en cas de douleur.",
             diagramResId = R.drawable.gainage_ventral
         ),
         ExerciseInfo(

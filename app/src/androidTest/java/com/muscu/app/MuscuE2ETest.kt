@@ -22,7 +22,7 @@ class MuscuE2ETest {
     fun dashboardIsDisplayed() {
         composeTestRule.onNodeWithTag("dashboard_title").assertIsDisplayed()
         composeTestRule.onNodeWithText("Prochaine séance").assertIsDisplayed()
-        composeTestRule.onNodeWithTag("lumbar_reminder_card").assertIsDisplayed()
+
     }
 
     @Test
