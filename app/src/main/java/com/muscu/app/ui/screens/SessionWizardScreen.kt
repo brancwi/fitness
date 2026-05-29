@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalLayoutApi::class)
+
 package com.muscu.app.ui.screens
 
 import androidx.compose.foundation.layout.*
@@ -23,7 +25,7 @@ import com.muscu.app.data.model.WorkoutTemplate
 import com.muscu.app.viewmodel.WizardExerciseConfig
 import com.muscu.app.viewmodel.WorkoutTemplateViewModel
 
-@OptIn(ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalMaterial3Api::class, ExperimentalLayoutApi::class)
 @Composable
 fun SessionWizardScreen(
     viewModel: WorkoutTemplateViewModel,
@@ -251,7 +253,10 @@ private fun Step1Info(
             maxLines = 3
         )
         Text("Jour de la semaine (optionnel)", style = MaterialTheme.typography.bodyMedium, fontWeight = FontWeight.SemiBold)
-        Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+        FlowRow(
+            horizontalArrangement = Arrangement.spacedBy(8.dp),
+            verticalArrangement = Arrangement.spacedBy(8.dp)
+        ) {
             listOf(1 to "Lun", 2 to "Mar", 3 to "Mer", 4 to "Jeu", 5 to "Ven", 6 to "Sam", 7 to "Dim").forEach { (day, label) ->
                 FilterChip(
                     selected = selectedDay == day,
