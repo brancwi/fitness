@@ -29,43 +29,59 @@ import com.muscu.app.viewmodel.WorkoutTemplateViewModel
 @Composable
 fun SessionWizardScreen(
     viewModel: WorkoutTemplateViewModel,
-    editingTemplate: WorkoutTemplate? = null,
+    templateId: String? = null,
     onBack: () -> Unit
 ) {
     val state by viewModel.uiState.collectAsState()
     var step by remember { mutableIntStateOf(1) }
 
     // Step 1 state
-    var name by remember { mutableStateOf(editingTemplate?.name ?: "") }
-    var description by remember { mutableStateOf(editingTemplate?.description ?: "") }
-    var selectedDay by remember { mutableIntStateOf(editingTemplate?.dayOfWeek ?: 0) }
+    var name by remember { mutableStateOf("") }
+    var description by remember { mutableStateOf("") }
+    var selectedDay by remember { mutableIntStateOf(0) }
 
     // Step 2 & 3 state
     var selectedExerciseIds by remember { mutableStateOf(setOf<String>()) }
     var exerciseConfigs by remember { mutableStateOf(listOf<WizardExerciseConfig>()) }
 
-    // Load existing template exercises when editing
-    LaunchedEffect(editingTemplate) {
-        editingTemplate?.let { template ->
-            val templateExercises = viewModel.uiState.value.templateExercises
-            if (templateExercises.isNotEmpty()) {
-                selectedExerciseIds = templateExercises.map { it.exerciseId }.toSet()
-                exerciseConfigs = templateExercises.map { te ->
-                    WizardExerciseConfig(
-                        exerciseId = te.exerciseId,
-                        sets = te.targetSets,
-                        repsMin = te.targetRepsMin,
-                        repsMax = te.targetRepsMax,
-                        restSeconds = te.restSeconds
-                    )
-                }
-            }
+    // Load template data asynchronously when editing
+    LaunchedEffect(templateId) {
+        if (templateId != null) {
+            viewModel.loadTemplateForEditing(templateId)
+        } else {
+            viewModel.clearSelectedTemplate()
+            name = ""
+            description = ""
+            selectedDay = 0
+            selectedExerciseIds = emptySet()
+            exerciseConfigs = emptyList()
+            step = 1
         }
     }
 
-    // Reset saved flag when entering
-    LaunchedEffect(Unit) {
-        viewModel.selectTemplate(null)
+    // Pre-fill fields when selected template changes
+    LaunchedEffect(state.selectedTemplate) {
+        state.selectedTemplate?.let { template ->
+            name = template.name
+            description = template.description ?: ""
+            selectedDay = template.dayOfWeek ?: 0
+        }
+    }
+
+    // Pre-fill exercises when template exercises are loaded
+    LaunchedEffect(state.templateExercises) {
+        if (templateId != null && state.templateExercises.isNotEmpty()) {
+            selectedExerciseIds = state.templateExercises.map { it.exerciseId }.toSet()
+            exerciseConfigs = state.templateExercises.map { te ->
+                WizardExerciseConfig(
+                    exerciseId = te.exerciseId,
+                    sets = te.targetSets,
+                    repsMin = te.targetRepsMin,
+                    repsMax = te.targetRepsMax,
+                    restSeconds = te.restSeconds
+                )
+            }
+        }
     }
 
     if (state.saved) {
@@ -77,7 +93,7 @@ fun SessionWizardScreen(
     Scaffold(
         topBar = {
             TopAppBar(
-                title = { Text(if (editingTemplate == null) "Nouvelle séance" else "Modifier la séance") },
+                title = { Text(if (state.selectedTemplate == null) "Nouvelle séance" else "Modifier la séance") },
                 navigationIcon = {
                     IconButton(onClick = onBack) {
                         Icon(Icons.AutoMirrored.Filled.ArrowBack, contentDescription = "Retour")
@@ -166,9 +182,10 @@ fun SessionWizardScreen(
                 } else {
                     Button(
                         onClick = {
-                            if (editingTemplate != null) {
+                            val selected = state.selectedTemplate
+                            if (selected != null) {
                                 viewModel.updateTemplate(
-                                    editingTemplate.copy(name = name, description = description.takeIf { it.isNotBlank() }, dayOfWeek = selectedDay.takeIf { it > 0 }),
+                                    selected.copy(name = name, description = description.takeIf { it.isNotBlank() }, dayOfWeek = selectedDay.takeIf { it > 0 }),
                                     exerciseConfigs
                                 )
                             } else {
@@ -183,7 +200,7 @@ fun SessionWizardScreen(
                         modifier = Modifier.weight(1f),
                         enabled = exerciseConfigs.isNotEmpty()
                     ) {
-                        Text(if (editingTemplate != null) "Mettre à jour" else "Enregistrer")
+                        Text(if (state.selectedTemplate != null) "Mettre à jour" else "Enregistrer")
                     }
                 }
             }

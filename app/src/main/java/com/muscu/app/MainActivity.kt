@@ -218,17 +218,16 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                 val viewModel: WorkoutTemplateViewModel = viewModel(factory = WorkoutTemplateViewModel.Factory(repository))
                 SessionWizardScreen(
                     viewModel = viewModel,
-                    editingTemplate = null,
+                    templateId = null,
                     onBack = { navController.popBackStack() }
                 )
             }
             composable("session_wizard/{templateId}") { backStackEntry ->
                 val templateId = backStackEntry.arguments?.getString("templateId") ?: ""
                 val viewModel: WorkoutTemplateViewModel = viewModel(factory = WorkoutTemplateViewModel.Factory(repository))
-                val editingTemplate = viewModel.uiState.value.templates.find { it.id == templateId }
                 SessionWizardScreen(
                     viewModel = viewModel,
-                    editingTemplate = editingTemplate,
+                    templateId = templateId,
                     onBack = { navController.popBackStack() }
                 )
             }

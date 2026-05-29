@@ -68,6 +68,26 @@ class WorkoutTemplateViewModel(
         template?.let { loadTemplateExercises(it.id) }
     }
 
+    fun loadTemplateForEditing(templateId: String) {
+        viewModelScope.launch {
+            val template = repository.getTemplateById(templateId)
+            val exercises = repository.getTemplateExercisesSync(templateId)
+            _uiState.value = _uiState.value.copy(
+                selectedTemplate = template,
+                templateExercises = exercises,
+                saved = false
+            )
+        }
+    }
+
+    fun clearSelectedTemplate() {
+        _uiState.value = _uiState.value.copy(
+            selectedTemplate = null,
+            templateExercises = emptyList(),
+            saved = false
+        )
+    }
+
     private fun loadTemplateExercises(templateId: String) {
         viewModelScope.launch {
             repository.getTemplateExercises(templateId).collect { items ->
