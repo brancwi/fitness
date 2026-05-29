@@ -49,7 +49,9 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.layout.ContentScale
 import com.muscu.app.data.model.Exercise
+import com.muscu.app.ui.components.ExerciseIllustration
 import com.muscu.app.data.model.PerformedSet
 import com.muscu.app.data.model.AppSettings
 import com.muscu.app.domain.calculator.RestTimeRecommendations
@@ -372,6 +374,14 @@ private fun ExerciseCard(
                     color = MaterialTheme.colorScheme.error
                 )
             }
+            Spacer(Modifier.height(8.dp))
+            ExerciseIllustration(
+                exerciseId = exercise.id,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(140.dp),
+                contentScale = ContentScale.Fit
+            )
         }
     }
 }

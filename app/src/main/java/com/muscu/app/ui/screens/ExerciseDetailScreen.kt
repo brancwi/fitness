@@ -36,7 +36,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.layout.ContentScale
 import com.muscu.app.domain.model.ExerciseInfoRepository
+import com.muscu.app.ui.components.ExerciseIllustration
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -74,6 +76,21 @@ fun ExerciseDetailScreen(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.primary
                 )
+
+                // Illustration
+                androidx.compose.material3.Card(
+                    modifier = Modifier.fillMaxWidth(),
+                    elevation = CardDefaults.cardElevation(2.dp)
+                ) {
+                    ExerciseIllustration(
+                        exerciseId = exerciseId,
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(220.dp)
+                            .padding(12.dp),
+                        contentScale = ContentScale.Fit
+                    )
+                }
 
                 // Muscles sollicités
                 InfoCard(

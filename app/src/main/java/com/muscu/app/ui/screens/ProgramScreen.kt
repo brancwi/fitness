@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.ui.Alignment
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -29,6 +30,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import androidx.compose.ui.layout.ContentScale
+import com.muscu.app.ui.components.ExerciseIllustration
 import com.muscu.app.viewmodel.ProgramViewModel
 
 @Composable
@@ -94,11 +97,16 @@ private fun DayCard(
                         .fillMaxWidth()
                         .clickable { onExerciseInfo(ex.id, ex.name) }
                         .padding(vertical = 4.dp),
-                    horizontalArrangement = Arrangement.SpaceBetween,
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
+                    ExerciseIllustration(
+                        exerciseId = ex.id,
+                        modifier = Modifier.height(40.dp).width(40.dp),
+                        contentScale = ContentScale.Fit
+                    )
                     Text(
-                        "• ${ex.name} – ${ex.targetSets} x $reps (${ex.intensity.label})",
+                        "${ex.name} – ${ex.targetSets} x $reps (${ex.intensity.label})",
                         style = MaterialTheme.typography.bodyMedium,
                         modifier = Modifier.weight(1f)
                     )

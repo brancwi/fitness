@@ -1,0 +1,11 @@
+Exercise Illustrations Attribution
+==================================
+
+Source: OpenTraining Exercises (https://github.com/chaosbastler/opentraining-exercises)
+Original author: Everkinetic (http://everkinetic.com/)
+License: Creative Commons Attribution-ShareAlike 3.0 Unported (CC-BY-SA 3.0)
+
+The SVG illustrations in this folder are derived from the OpenTraining project.
+They are used under the terms of the CC-BY-SA 3.0 license.
+
+Converted from original GIF/PNG to SVG format by the OpenTraining community.
