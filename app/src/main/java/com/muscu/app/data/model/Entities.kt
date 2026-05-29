@@ -8,13 +8,38 @@ import com.muscu.app.domain.model.Intensity
 data class Exercise(
     @PrimaryKey val id: String,
     val name: String,
-    val dayOfWeek: Int, // 1=Lundi, 2=Mardi...
+    val dayOfWeek: Int, // 1=Lundi, 2=Mardi... (legacy, kept for migration)
     val category: String,
     val targetSets: Int,
     val targetRepsMin: Int,
     val targetRepsMax: Int,
     val intensity: Intensity,
     val warning: String? = null,
+    val orderIndex: Int,
+    // New catalog fields
+    val equipment: String = "",
+    val objective: String = "",
+    val difficulty: String = "Intermédiaire"
+)
+
+@Entity(tableName = "workout_templates")
+data class WorkoutTemplate(
+    @PrimaryKey val id: String,
+    val name: String,
+    val description: String? = null,
+    val dayOfWeek: Int? = null, // Optional: 1=Mon..7=Sun
+    val createdAt: Long = System.currentTimeMillis()
+)
+
+@Entity(tableName = "template_exercises")
+data class TemplateExercise(
+    @PrimaryKey val id: String,
+    val templateId: String,
+    val exerciseId: String,
+    val targetSets: Int,
+    val targetRepsMin: Int,
+    val targetRepsMax: Int,
+    val restSeconds: Int,
     val orderIndex: Int
 )
 
@@ -27,7 +52,8 @@ data class WorkoutSession(
     val overallRating: Int? = null,
     val energyLevel: Int? = null,
     val perceivedEffort: Int? = null,
-    val sessionNotes: String? = null
+    val sessionNotes: String? = null,
+    val templateId: String? = null
 )
 
 @Entity(tableName = "performed_sets")

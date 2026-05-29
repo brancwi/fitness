@@ -3,6 +3,7 @@ package com.muscu.app.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.viewModelScope
+import com.muscu.app.data.model.WorkoutTemplate
 import com.muscu.app.data.repository.AppSettingsRepository
 import com.muscu.app.data.repository.WorkoutRepository
 import com.muscu.app.domain.calculator.NextWorkoutDayCalculator
@@ -15,7 +16,8 @@ data class DashboardUiState(
     val nextWorkoutDay: String = "",
     val nextWorkoutDayIndex: Int = 2,
     val hasActiveSession: Boolean = false,
-    val activeSessionDay: Int? = null
+    val activeSessionDay: Int? = null,
+    val templates: List<WorkoutTemplate> = emptyList()
 )
 
 class DashboardViewModel(
@@ -31,6 +33,7 @@ class DashboardViewModel(
             appSettingsRepository.seedDefaultsIfNeeded()
             repository.seedExercisesIfNeeded()
             loadDashboard()
+            loadTemplates()
         }
     }
 
@@ -40,10 +43,18 @@ class DashboardViewModel(
             val names = appSettingsRepository.dayNames().first()
             val (nextDay, dayName) = NextWorkoutDayCalculator.calculate(days, names)
 
-            _uiState.value = DashboardUiState(
+            _uiState.value = _uiState.value.copy(
                 nextWorkoutDay = dayName,
                 nextWorkoutDayIndex = nextDay
             )
+        }
+    }
+
+    private fun loadTemplates() {
+        viewModelScope.launch {
+            repository.getAllTemplates().collect { templates ->
+                _uiState.value = _uiState.value.copy(templates = templates)
+            }
         }
     }
 

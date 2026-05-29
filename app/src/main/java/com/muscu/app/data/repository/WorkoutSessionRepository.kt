@@ -21,4 +21,7 @@ class WorkoutSessionRepository(private val sessionDao: WorkoutSessionDao) {
     suspend fun update(session: WorkoutSession) = sessionDao.update(session)
 
     suspend fun deleteById(id: String) = sessionDao.deleteById(id)
+
+    fun getAllSessions(): kotlinx.coroutines.flow.Flow<List<WorkoutSession>> =
+        sessionDao.getAllSessions()
 }

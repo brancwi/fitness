@@ -126,6 +126,42 @@ class WorkoutViewModel(
         }
     }
 
+    fun loadTemplate(templateId: String, dayOfWeek: Int) {
+        viewModelScope.launch {
+            _uiState.value = _uiState.value.copy(isLoading = true)
+            val templateExercises = repository.getTemplateExercisesSync(templateId)
+            val exercises = templateExercises.mapNotNull { te ->
+                repository.getExerciseById(te.exerciseId)
+            }
+
+            val session = repository.startSession(dayOfWeek).copy(templateId = templateId)
+            repository.updateSession(session)
+
+            val setsMap = mutableMapOf<String, List<PerformedSet>>()
+            var allDone = true
+            templateExercises.forEach { te ->
+                val ex = repository.getExerciseById(te.exerciseId) ?: return@forEach
+                repository.ensureSetsForExerciseWithConfig(
+                    sessionId = session.id,
+                    exercise = ex,
+                    targetSets = te.targetSets,
+                    restSeconds = te.restSeconds
+                )
+                val sets = repository.getSetsForExercise(session.id, ex.id).first()
+                setsMap[ex.id] = sets
+                if (sets.any { !it.isCompleted }) allDone = false
+            }
+
+            _uiState.value = _uiState.value.copy(
+                exercises = exercises,
+                session = session,
+                setsByExercise = setsMap,
+                isLoading = false,
+                allCompleted = allDone && exercises.isNotEmpty()
+            )
+        }
+    }
+
     fun startSet() {
         val state = _uiState.value
         val exercise = state.exercises.getOrNull(state.currentExerciseIndex) ?: return

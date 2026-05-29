@@ -5,21 +5,26 @@ import androidx.room.Database
 import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
+
 @Database(
     entities = [
         Exercise::class,
+        WorkoutTemplate::class,
+        TemplateExercise::class,
         WorkoutSession::class,
         PerformedSet::class,
         UserProfile::class,
         Measurement::class,
         AppSettings::class
     ],
-    version = 13,
+    version = 14,
     exportSchema = false
 )
 @TypeConverters(Converters::class)
 abstract class AppDatabase : RoomDatabase() {
     abstract fun exerciseDao(): ExerciseDao
+    abstract fun workoutTemplateDao(): WorkoutTemplateDao
+    abstract fun templateExerciseDao(): TemplateExerciseDao
     abstract fun workoutSessionDao(): WorkoutSessionDao
     abstract fun performedSetDao(): PerformedSetDao
     abstract fun userProfileDao(): UserProfileDao

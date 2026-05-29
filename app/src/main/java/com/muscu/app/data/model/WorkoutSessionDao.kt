@@ -26,4 +26,7 @@ interface WorkoutSessionDao {
 
     @Query("DELETE FROM workout_sessions WHERE id = :id")
     suspend fun deleteById(id: String)
+
+    @Query("SELECT * FROM workout_sessions ORDER BY dateTimestamp DESC")
+    fun getAllSessions(): Flow<List<WorkoutSession>>
 }

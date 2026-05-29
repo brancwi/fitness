@@ -18,10 +18,19 @@ class PerformedSetRepository(
         setDao.getSetsForExercise(sessionId, exerciseId)
 
     suspend fun ensureSetsForExercise(sessionId: String, exercise: Exercise) {
+        ensureSetsForExerciseWithConfig(sessionId, exercise, exercise.targetSets, null)
+    }
+
+    suspend fun ensureSetsForExerciseWithConfig(
+        sessionId: String,
+        exercise: Exercise,
+        targetSets: Int,
+        restSecondsOverride: Int?
+    ) {
         val existing = setDao.getSetsForExercise(sessionId, exercise.id).first()
         if (existing.isEmpty()) {
             val settings = appSettingsRepository.getLatest()
-            val defaultRest = when (exercise.intensity) {
+            val defaultRest = restSecondsOverride ?: when (exercise.intensity) {
                 Intensity.MODERATE -> settings.moderateRestSeconds
                 Intensity.LIGHT -> settings.lightRestSeconds
                 Intensity.BODYWEIGHT -> settings.bodyweightRestSeconds
@@ -35,7 +44,7 @@ class PerformedSetRepository(
                 ?: settings.defaultReps
             val defaultWeight = lastSet?.weightKg ?: settings.defaultWeightKg
 
-            repeat(exercise.targetSets) { index ->
+            repeat(targetSets) { index ->
                 setDao.insert(
                     PerformedSet(
                         id = UUID.randomUUID().toString(),

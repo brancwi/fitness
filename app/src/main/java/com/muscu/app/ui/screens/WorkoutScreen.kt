@@ -72,13 +72,18 @@ private fun restRecommendation(intensity: Intensity, settings: AppSettings?): St
 fun WorkoutScreen(
     viewModel: WorkoutViewModel,
     dayOfWeek: Int,
+    templateId: String? = null,
     onBack: () -> Unit,
     onExerciseInfo: (String, String) -> Unit = { _, _ -> }
 ) {
     val state by viewModel.uiState.collectAsState()
 
-    LaunchedEffect(dayOfWeek) {
-        viewModel.loadDay(dayOfWeek)
+    LaunchedEffect(dayOfWeek, templateId) {
+        if (templateId != null) {
+            viewModel.loadTemplate(templateId, dayOfWeek)
+        } else {
+            viewModel.loadDay(dayOfWeek)
+        }
     }
 
     val currentExercise = state.exercises.getOrNull(state.currentExerciseIndex)

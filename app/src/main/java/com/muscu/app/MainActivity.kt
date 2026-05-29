@@ -36,14 +36,19 @@ import com.muscu.app.ui.screens.ExercisePerformanceScreen
 import com.muscu.app.ui.screens.MeasurementHistoryScreen
 import com.muscu.app.ui.screens.MeasurementScreen
 import com.muscu.app.ui.screens.ProgramScreen
+import com.muscu.app.ui.screens.SessionHistoryScreen
+import com.muscu.app.ui.screens.SessionWizardScreen
 import com.muscu.app.ui.screens.SettingsScreen
 import com.muscu.app.ui.screens.WorkoutScreen
+import com.muscu.app.ui.screens.WorkoutTemplateListScreen
 import com.muscu.app.ui.theme.MuscuTheme
 import com.muscu.app.viewmodel.DashboardViewModel
 import com.muscu.app.viewmodel.ExercisePerformanceViewModel
 import com.muscu.app.viewmodel.MeasurementViewModel
 import com.muscu.app.viewmodel.ProgramViewModel
+import com.muscu.app.viewmodel.SessionHistoryViewModel
 import com.muscu.app.viewmodel.SettingsViewModel
+import com.muscu.app.viewmodel.WorkoutTemplateViewModel
 import com.muscu.app.viewmodel.WorkoutViewModel
 
 sealed class Screen(val route: String, val label: String, val icon: ImageVector) {
@@ -109,6 +114,12 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                     viewModel = viewModel,
                     onStartWorkout = { day ->
                         navController.navigate("workout/$day")
+                    },
+                    onViewTemplates = {
+                        navController.navigate("workout_templates")
+                    },
+                    onViewSessionHistory = {
+                        navController.navigate("session_history")
                     }
                 )
             }
@@ -144,10 +155,12 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
             }
             composable("workout/{day}") { backStackEntry ->
                 val day = backStackEntry.arguments?.getString("day")?.toIntOrNull() ?: 2
+                val templateId = backStackEntry.arguments?.getString("templateId")
                 val viewModel: WorkoutViewModel = viewModel(factory = WorkoutViewModel.Factory(repository, appSettingsRepository))
                 WorkoutScreen(
                     viewModel = viewModel,
                     dayOfWeek = day,
+                    templateId = templateId,
                     onBack = { navController.popBackStack() },
                     onExerciseInfo = { exId, exName ->
                         navController.navigate("exercise_detail/$exId/${java.net.URLEncoder.encode(exName, "UTF-8")}")
@@ -187,6 +200,44 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                 LaunchedEffect(exId) {
                     viewModel.loadHistory(exId)
                 }
+            }
+            composable("workout_templates") {
+                val viewModel: WorkoutTemplateViewModel = viewModel(factory = WorkoutTemplateViewModel.Factory(repository))
+                WorkoutTemplateListScreen(
+                    viewModel = viewModel,
+                    onBack = { navController.popBackStack() },
+                    onCreateTemplate = {
+                        navController.navigate("session_wizard")
+                    },
+                    onEditTemplate = { template ->
+                        navController.navigate("session_wizard/${template.id}")
+                    }
+                )
+            }
+            composable("session_wizard") {
+                val viewModel: WorkoutTemplateViewModel = viewModel(factory = WorkoutTemplateViewModel.Factory(repository))
+                SessionWizardScreen(
+                    viewModel = viewModel,
+                    editingTemplate = null,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("session_wizard/{templateId}") { backStackEntry ->
+                val templateId = backStackEntry.arguments?.getString("templateId") ?: ""
+                val viewModel: WorkoutTemplateViewModel = viewModel(factory = WorkoutTemplateViewModel.Factory(repository))
+                val editingTemplate = viewModel.uiState.value.templates.find { it.id == templateId }
+                SessionWizardScreen(
+                    viewModel = viewModel,
+                    editingTemplate = editingTemplate,
+                    onBack = { navController.popBackStack() }
+                )
+            }
+            composable("session_history") {
+                val viewModel: SessionHistoryViewModel = viewModel(factory = SessionHistoryViewModel.Factory(repository))
+                SessionHistoryScreen(
+                    viewModel = viewModel,
+                    onBack = { navController.popBackStack() }
+                )
             }
         }
     }
