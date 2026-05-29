@@ -112,36 +112,36 @@ fun SessionWizardScreen(
             StepIndicator(currentStep = step, totalSteps = 3)
             Spacer(Modifier.height(16.dp))
 
-            when (step) {
-                1 -> Step1Info(
-                    name = name,
-                    onNameChange = { name = it },
-                    description = description,
-                    onDescriptionChange = { description = it },
-                    selectedDay = selectedDay,
-                    onDaySelected = { selectedDay = it }
-                )
-                2 -> Step2SelectExercises(
-                    availableExercises = state.availableExercises,
-                    searchQuery = state.searchQuery,
-                    onSearch = { viewModel.searchExercises(it) },
-                    selectedIds = selectedExerciseIds,
-                    onToggleExercise = { id ->
-                        selectedExerciseIds = if (selectedExerciseIds.contains(id)) {
-                            selectedExerciseIds - id
-                        } else {
-                            selectedExerciseIds + id
+            Box(modifier = Modifier.weight(1f)) {
+                when (step) {
+                    1 -> Step1Info(
+                        name = name,
+                        onNameChange = { name = it },
+                        description = description,
+                        onDescriptionChange = { description = it },
+                        selectedDay = selectedDay,
+                        onDaySelected = { selectedDay = it }
+                    )
+                    2 -> Step2SelectExercises(
+                        availableExercises = state.availableExercises,
+                        searchQuery = state.searchQuery,
+                        onSearch = { viewModel.searchExercises(it) },
+                        selectedIds = selectedExerciseIds,
+                        onToggleExercise = { id ->
+                            selectedExerciseIds = if (selectedExerciseIds.contains(id)) {
+                                selectedExerciseIds - id
+                            } else {
+                                selectedExerciseIds + id
+                            }
                         }
-                    }
-                )
-                3 -> Step3ConfigureExercises(
-                    exercises = state.availableExercises.filter { it.id in selectedExerciseIds },
-                    configs = exerciseConfigs,
-                    onConfigsChange = { exerciseConfigs = it }
-                )
+                    )
+                    3 -> Step3ConfigureExercises(
+                        exercises = state.availableExercises.filter { it.id in selectedExerciseIds },
+                        configs = exerciseConfigs,
+                        onConfigsChange = { exerciseConfigs = it }
+                    )
+                }
             }
-
-            Spacer(Modifier.weight(1f))
 
             // Navigation buttons
             Row(modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(12.dp)) {
