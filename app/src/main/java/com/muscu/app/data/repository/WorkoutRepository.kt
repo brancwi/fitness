@@ -46,6 +46,10 @@ class WorkoutRepository(db: AppDatabase, appSettingsRepository: AppSettingsRepos
     suspend fun getPerformanceHistoryForExercise(exerciseId: String): List<PerformedSetWithDate> =
         setRepository.getPerformanceHistory(exerciseId)
 
+    suspend fun deletePerformedSet(id: String) = setRepository.deleteById(id)
+
+    suspend fun deleteWorkoutSession(id: String) = sessionRepository.deleteById(id)
+
     // ── User Profile ──
     fun getUserProfile(): Flow<UserProfile?> = profileRepository.getProfile()
     suspend fun saveUserProfile(weightKg: Float, targetGrams: Int) =

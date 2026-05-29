@@ -181,7 +181,8 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                 ExercisePerformanceScreen(
                     exerciseName = exName,
                     history = viewModel.uiState.collectAsState().value.history,
-                    onBack = { navController.popBackStack() }
+                    onBack = { navController.popBackStack() },
+                    onDeleteSet = { viewModel.deleteSet(it, exId) }
                 )
                 LaunchedEffect(exId) {
                     viewModel.loadHistory(exId)

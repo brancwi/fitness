@@ -10,13 +10,16 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowDownward
 import androidx.compose.material.icons.filled.ArrowUpward
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -107,7 +110,7 @@ fun MeasurementHistoryScreen(
                     if (state.measurements.isEmpty()) {
                         Text("Aucune mesure enregistrée", color = MaterialTheme.colorScheme.onSurfaceVariant)
                     } else {
-                        MeasurementHistoryTable(state.measurements)
+                        MeasurementHistoryTable(state.measurements, onDelete = viewModel::deleteMeasurement)
                     }
                 }
             }
@@ -191,9 +194,10 @@ private fun MeasurementLegend(metrics: List<MeasurementMetric>) {
 }
 
 @Composable
-private fun MeasurementHistoryTable(measurements: List<Measurement>) {
+private fun MeasurementHistoryTable(measurements: List<Measurement>, onDelete: (String) -> Unit) {
     val formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy")
     val zone = java.time.ZoneId.systemDefault()
+    var confirmDeleteId by remember { mutableStateOf<String?>(null) }
 
     Column(modifier = Modifier.testTag("measurement_history_table")) {
         measurements.forEachIndexed { index, m ->
@@ -214,7 +218,7 @@ private fun MeasurementHistoryTable(measurements: List<Measurement>) {
             ) {
                 Text(dateStr, style = MaterialTheme.typography.bodySmall)
 
-                Row(horizontalArrangement = Arrangement.spacedBy(12.dp)) {
+                Row(horizontalArrangement = Arrangement.spacedBy(12.dp), verticalAlignment = Alignment.CenterVertically) {
                     ValueWithDiff(
                         value = m.weightKg?.let { "%.1f kg".format(it) } ?: "—",
                         diff = weightDiff
@@ -223,12 +227,47 @@ private fun MeasurementHistoryTable(measurements: List<Measurement>) {
                         value = m.bodyFatPercent?.let { "%.1f%%".format(it) } ?: "—",
                         diff = fatDiff
                     )
+                    IconButton(
+                        onClick = { confirmDeleteId = m.id },
+                        modifier = Modifier.size(24.dp)
+                    ) {
+                        Icon(
+                            Icons.Default.Delete,
+                            contentDescription = "Supprimer",
+                            tint = MaterialTheme.colorScheme.error,
+                            modifier = Modifier.size(16.dp)
+                        )
+                    }
                 }
             }
             if (index < measurements.size - 1) {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
             }
         }
+    }
+
+    confirmDeleteId?.let { id ->
+        AlertDialog(
+            onDismissRequest = { confirmDeleteId = null },
+            title = { Text("Supprimer ?") },
+            text = { Text("Cette mensuration sera définitivement supprimée.") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDelete(id)
+                        confirmDeleteId = null
+                    },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Supprimer")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmDeleteId = null }) {
+                    Text("Annuler")
+                }
+            }
+        )
     }
 }
 

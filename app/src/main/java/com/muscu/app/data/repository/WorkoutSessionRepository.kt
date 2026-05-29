@@ -19,4 +19,6 @@ class WorkoutSessionRepository(private val sessionDao: WorkoutSessionDao) {
     suspend fun getLastForDay(day: Int): WorkoutSession? = sessionDao.getLastSessionForDay(day)
 
     suspend fun update(session: WorkoutSession) = sessionDao.update(session)
+
+    suspend fun deleteById(id: String) = sessionDao.deleteById(id)
 }

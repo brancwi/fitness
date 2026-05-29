@@ -89,6 +89,12 @@ class MeasurementViewModel(
         }
     }
 
+    fun deleteMeasurement(id: String) {
+        viewModelScope.launch {
+            repository.deleteMeasurement(id)
+        }
+    }
+
     class Factory(
         private val repository: WorkoutRepository,
         private val appSettingsRepository: AppSettingsRepository

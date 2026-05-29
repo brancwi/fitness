@@ -32,6 +32,13 @@ class ExercisePerformanceViewModel(
         }
     }
 
+    fun deleteSet(id: String, exerciseId: String) {
+        viewModelScope.launch {
+            repository.deletePerformedSet(id)
+            loadHistory(exerciseId)
+        }
+    }
+
     class Factory(private val repository: WorkoutRepository) : ViewModelProvider.Factory {
         @Suppress("UNCHECKED_CAST")
         override fun <T : androidx.lifecycle.ViewModel> create(modelClass: Class<T>): T {

@@ -6,8 +6,13 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -30,7 +35,8 @@ import kotlin.math.max
 fun ExercisePerformanceScreen(
     exerciseName: String,
     history: List<PerformedSetWithDate>,
-    onBack: () -> Unit
+    onBack: () -> Unit,
+    onDeleteSet: (String) -> Unit = {}
 ) {
     Scaffold(
         topBar = {
@@ -98,7 +104,7 @@ fun ExercisePerformanceScreen(
                             fontWeight = FontWeight.Bold
                         )
                         Spacer(Modifier.height(8.dp))
-                        PerformanceTable(history = history)
+                        PerformanceTable(history = history, onDelete = onDeleteSet)
                     }
                 }
             }
@@ -219,8 +225,10 @@ private fun PerformanceChart(history: List<PerformedSetWithDate>) {
 }
 
 @Composable
-private fun PerformanceTable(history: List<PerformedSetWithDate>) {
+private fun PerformanceTable(history: List<PerformedSetWithDate>, onDelete: (String) -> Unit) {
     val dateFormat = SimpleDateFormat("dd/MM/yyyy", Locale.FRANCE)
+    var confirmDeleteId by remember { mutableStateOf<String?>(null) }
+
     Column {
         history.forEachIndexed { index, entry ->
             val prev = history.getOrNull(index - 1)
@@ -251,10 +259,46 @@ private fun PerformanceTable(history: List<PerformedSetWithDate>) {
                     style = MaterialTheme.typography.bodySmall,
                     modifier = Modifier.weight(1f)
                 )
+                IconButton(
+                    onClick = { confirmDeleteId = entry.set.id },
+                    modifier = Modifier.size(24.dp)
+                ) {
+                    Icon(
+                        Icons.Default.Delete,
+                        contentDescription = "Supprimer",
+                        tint = MaterialTheme.colorScheme.error,
+                        modifier = Modifier.size(16.dp)
+                    )
+                }
             }
             if (index < history.size - 1) {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f))
             }
         }
+    }
+
+    // Confirmation dialog
+    confirmDeleteId?.let { id ->
+        AlertDialog(
+            onDismissRequest = { confirmDeleteId = null },
+            title = { Text("Supprimer ?") },
+            text = { Text("Cette série sera définitivement supprimée.") },
+            confirmButton = {
+                TextButton(
+                    onClick = {
+                        onDelete(id)
+                        confirmDeleteId = null
+                    },
+                    colors = ButtonDefaults.textButtonColors(contentColor = MaterialTheme.colorScheme.error)
+                ) {
+                    Text("Supprimer")
+                }
+            },
+            dismissButton = {
+                TextButton(onClick = { confirmDeleteId = null }) {
+                    Text("Annuler")
+                }
+            }
+        )
     }
 }

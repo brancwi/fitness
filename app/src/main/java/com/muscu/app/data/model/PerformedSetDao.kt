@@ -24,6 +24,9 @@ interface PerformedSetDao {
     @Query("DELETE FROM performed_sets WHERE sessionId = :sessionId AND exerciseId = :exerciseId")
     suspend fun deleteForExercise(sessionId: String, exerciseId: String)
 
+    @Query("DELETE FROM performed_sets WHERE id = :id")
+    suspend fun deleteById(id: String)
+
     /**
      * Get the most recent completed set for a given exercise across all sessions.
      */

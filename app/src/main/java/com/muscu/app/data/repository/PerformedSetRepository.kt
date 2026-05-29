@@ -58,4 +58,6 @@ class PerformedSetRepository(
 
     suspend fun getPerformanceHistory(exerciseId: String): List<PerformedSetWithDate> =
         setDao.getCompletedSetsWithDateForExercise(exerciseId)
+
+    suspend fun deleteById(id: String) = setDao.deleteById(id)
 }
