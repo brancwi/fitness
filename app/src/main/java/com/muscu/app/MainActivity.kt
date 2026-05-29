@@ -40,6 +40,7 @@ import com.muscu.app.ui.screens.SessionHistoryScreen
 import com.muscu.app.ui.screens.SessionWizardScreen
 import com.muscu.app.ui.screens.SettingsScreen
 import com.muscu.app.ui.screens.WorkoutScreen
+import com.muscu.app.ui.screens.CreditsScreen
 import com.muscu.app.ui.screens.WorkoutTemplateListScreen
 import com.muscu.app.ui.theme.MuscuTheme
 import com.muscu.app.viewmodel.DashboardViewModel
@@ -151,7 +152,13 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
             }
             composable(Screen.Settings.route) {
                 val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory(repository, appSettingsRepository))
-                SettingsScreen(viewModel = viewModel)
+                SettingsScreen(
+                    viewModel = viewModel,
+                    onCreditsClick = { navController.navigate("credits") }
+                )
+            }
+            composable("credits") {
+                CreditsScreen(onBack = { navController.popBackStack() })
             }
             composable("workout/{day}") { backStackEntry ->
                 val day = backStackEntry.arguments?.getString("day")?.toIntOrNull() ?: 2

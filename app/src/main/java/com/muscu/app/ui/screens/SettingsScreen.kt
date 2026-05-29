@@ -36,10 +36,14 @@ import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
+import androidx.compose.material3.OutlinedButton
 import com.muscu.app.viewmodel.SettingsViewModel
 
 @Composable
-fun SettingsScreen(viewModel: SettingsViewModel) {
+fun SettingsScreen(
+    viewModel: SettingsViewModel,
+    onCreditsClick: () -> Unit = {}
+) {
     val state by viewModel.uiState.collectAsState()
     val scrollState = rememberScrollState()
 
@@ -284,6 +288,13 @@ fun SettingsScreen(viewModel: SettingsViewModel) {
                 Text("Programme adapté à ton matériel : banc + haltères.")
                 Spacer(Modifier.height(4.dp))
                 Text("Suivi de force, mensurations et feedback de séance.")
+                Spacer(Modifier.height(12.dp))
+                OutlinedButton(
+                    onClick = onCreditsClick,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Crédits")
+                }
             }
         }
     }
