@@ -58,10 +58,13 @@ import com.muscu.app.domain.calculator.RestTimeRecommendations
 import com.muscu.app.domain.model.Intensity
 import com.muscu.app.domain.timer.TimerState
 import com.muscu.app.ui.components.PrepCountdownCard
+import com.muscu.app.ui.components.ProgressionChip
+import com.muscu.app.ui.components.SetHelpDialog
 import com.muscu.app.ui.components.SinusoidalGuide
 import com.muscu.app.ui.components.SpeedControl
 import com.muscu.app.ui.components.TempoEducationSheet
 import com.muscu.app.ui.components.TempoSummaryCard
+import com.muscu.app.ui.components.ExerciseRatingDialog
 import com.muscu.app.viewmodel.WorkoutUiState
 import com.muscu.app.viewmodel.WorkoutViewModel
 
@@ -140,6 +143,14 @@ fun WorkoutScreen(
                     )
                 }
 
+                if (state.showExerciseRating && currentExercise != null) {
+                    ExerciseRatingDialog(
+                        exerciseName = currentExercise.name,
+                        onConfirm = { rating -> viewModel.submitExerciseRating(rating) },
+                        onSkip = { viewModel.skipExerciseRating() }
+                    )
+                }
+
                 if (timerState is TimerState.Idle && currentSet != null) {
                     val showEducationSheet = remember { mutableStateOf(false) }
 
@@ -177,6 +188,7 @@ fun WorkoutScreen(
                         state = state,
                         currentSet = currentSet,
                         currentExercise = currentExercise,
+                        lastSet = state.lastSetForCurrentExercise,
                         onStartSet = viewModel::startSet,
                         onCompleteSet = viewModel::completeSet,
                         onUpdateRestTime = viewModel::updateRestTimeForCurrentSet
@@ -432,22 +444,37 @@ private fun SetInputCard(
     state: WorkoutUiState,
     currentSet: PerformedSet,
     currentExercise: Exercise?,
+    lastSet: com.muscu.app.data.model.PerformedSet?,
     onStartSet: () -> Unit,
     onCompleteSet: (String, String) -> Unit,
     onUpdateRestTime: (Int) -> Unit
 ) {
     val currentSets = currentExercise?.let { state.setsByExercise[it.id] } ?: emptyList()
+    var showHelp by remember { mutableStateOf(false) }
 
     Card(
         modifier = Modifier.fillMaxWidth(),
         elevation = CardDefaults.cardElevation(4.dp)
     ) {
         Column(modifier = Modifier.padding(16.dp)) {
-            Text(
-                "Série ${state.currentSetIndex + 1} / ${currentSets.size}",
-                style = MaterialTheme.typography.titleMedium,
-                fontWeight = FontWeight.Bold
-            )
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    "Série ${state.currentSetIndex + 1} / ${currentSets.size}",
+                    style = MaterialTheme.typography.titleMedium,
+                    fontWeight = FontWeight.Bold
+                )
+                IconButton(onClick = { showHelp = true }) {
+                    Icon(
+                        Icons.Default.Info,
+                        contentDescription = "Conseil",
+                        tint = MaterialTheme.colorScheme.primary
+                    )
+                }
+            }
             Spacer(Modifier.height(12.dp))
 
             var reps by remember { mutableStateOf("") }
@@ -478,6 +505,14 @@ private fun SetInputCard(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
                     modifier = Modifier.weight(1f),
                     singleLine = true
+                )
+            }
+
+            if (reps.isNotBlank()) {
+                ProgressionChip(
+                    reps = reps.toIntOrNull(),
+                    targetRepsMin = currentExercise?.targetRepsMin ?: 0,
+                    targetRepsMax = currentExercise?.targetRepsMax ?: 0
                 )
             }
 
@@ -516,5 +551,14 @@ private fun SetInputCard(
                 }
             }
         }
+    }
+
+    if (showHelp) {
+        SetHelpDialog(
+            lastSet = lastSet,
+            targetRepsMin = currentExercise?.targetRepsMin ?: 0,
+            targetRepsMax = currentExercise?.targetRepsMax ?: 0,
+            onDismiss = { showHelp = false }
+        )
     }
 }

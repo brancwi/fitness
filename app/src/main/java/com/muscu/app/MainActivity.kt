@@ -193,6 +193,7 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                 val viewModel: SettingsViewModel = viewModel(factory = SettingsViewModel.Factory(repository, appSettingsRepository))
                 SettingsScreen(
                     viewModel = viewModel,
+                    repository = repository,
                     onCreditsClick = { navController.navigate("credits") }
                 )
             }
@@ -222,6 +223,7 @@ fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRe
                 ExerciseDetailScreen(
                     exerciseId = exId,
                     exerciseName = exName,
+                    repository = repository,
                     onBack = { navController.popBackStack() },
                     onViewHistory = { id, name ->
                         navController.navigate("exercise_performance/$id/${java.net.URLEncoder.encode(name, "UTF-8")}")

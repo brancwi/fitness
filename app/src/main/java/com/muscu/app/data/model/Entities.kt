@@ -66,7 +66,8 @@ data class PerformedSet(
     val weightKg: Float? = null,
     val isCompleted: Boolean = false,
     val notes: String? = null,
-    val restSeconds: Int = 90
+    val restSeconds: Int = 90,
+    val difficultyRating: Int? = null
 )
 
 @Entity(tableName = "user_profile")

@@ -36,13 +36,21 @@ class PerformedSetRepository(
                 Intensity.BODYWEIGHT -> settings.bodyweightRestSeconds
             }
 
-            // Try to reuse last known reps/weight for this exercise
+            // Try to reuse last known reps/weight for this exercise, adjusted by difficulty rating
             val lastSet = setDao.getLastCompletedSetForExercise(exercise.id)
             val defaultReps = lastSet?.reps
                 ?: exercise.targetRepsMax.takeIf { it > 0 }
                 ?: exercise.targetRepsMin.takeIf { it > 0 }
                 ?: settings.defaultReps
-            val defaultWeight = lastSet?.weightKg ?: settings.defaultWeightKg
+            val defaultWeight = lastSet?.let { set ->
+                when (set.difficultyRating) {
+                    1 -> set.weightKg?.times(0.9f)
+                    2 -> set.weightKg?.times(0.95f)
+                    4 -> set.weightKg?.times(1.05f)
+                    5 -> set.weightKg?.times(1.10f)
+                    else -> set.weightKg
+                }
+            } ?: settings.defaultWeightKg
 
             repeat(targetSets) { index ->
                 setDao.insert(

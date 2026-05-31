@@ -39,7 +39,10 @@ data class WorkoutUiState(
     val prefilledWeight: String = "",
     val speedMultiplier: Float = 1.0f,
     val tempoAnalysis: TempoAnalysis? = null,
-    val prepCountdown: Int? = null
+    val prepCountdown: Int? = null,
+    val showExerciseRating: Boolean = false,
+    val ratingExerciseId: String? = null,
+    val lastSetForCurrentExercise: com.muscu.app.data.model.PerformedSet? = null
 )
 
 class WorkoutViewModel(
@@ -115,12 +118,18 @@ class WorkoutViewModel(
                     if (sets.any { !it.isCompleted }) allDone = false
                 }
 
+                val firstExercise = exercises.getOrNull(0)
+                val lastSet = firstExercise?.let {
+                    repository.getLastCompletedSetForExercise(it.id)
+                }
+
                 _uiState.value = _uiState.value.copy(
                     exercises = exercises,
                     session = session,
                     setsByExercise = setsMap,
                     isLoading = false,
-                    allCompleted = allDone && exercises.isNotEmpty()
+                    allCompleted = allDone && exercises.isNotEmpty(),
+                    lastSetForCurrentExercise = lastSet
                 )
             }
         }
@@ -152,12 +161,18 @@ class WorkoutViewModel(
                 if (sets.any { !it.isCompleted }) allDone = false
             }
 
+            val firstExercise = exercises.getOrNull(0)
+            val lastSet = firstExercise?.let {
+                repository.getLastCompletedSetForExercise(it.id)
+            }
+
             _uiState.value = _uiState.value.copy(
                 exercises = exercises,
                 session = session,
                 setsByExercise = setsMap,
                 isLoading = false,
-                allCompleted = allDone && exercises.isNotEmpty()
+                allCompleted = allDone && exercises.isNotEmpty(),
+                lastSetForCurrentExercise = lastSet
             )
         }
     }
@@ -251,16 +266,91 @@ class WorkoutViewModel(
                     showSetCompleteButton = false,
                     allCompleted = true,
                     prefilledReps = "",
-                    prefilledWeight = ""
+                    prefilledWeight = "",
+                    showExerciseRating = false,
+                    ratingExerciseId = null
+                )
+            } else if (isLastSetOfExercise) {
+                // Show rating dialog before moving to next exercise
+                _uiState.value = state.copy(
+                    setsByExercise = newMap,
+                    showSetCompleteButton = false,
+                    prefilledReps = "",
+                    prefilledWeight = "",
+                    showExerciseRating = true,
+                    ratingExerciseId = exercise.id
                 )
             } else {
                 _uiState.value = state.copy(
                     setsByExercise = newMap,
                     showSetCompleteButton = false,
                     prefilledReps = "",
-                    prefilledWeight = ""
+                    prefilledWeight = "",
+                    showExerciseRating = false,
+                    ratingExerciseId = null
                 )
                 timerManager.start(updated.restSeconds)
+            }
+        }
+    }
+
+    fun submitExerciseRating(rating: Int) {
+        viewModelScope.launch {
+            val state = _uiState.value
+            val exerciseId = state.ratingExerciseId ?: return@launch
+            val sets = state.setsByExercise[exerciseId] ?: return@launch
+            val lastSet = sets.lastOrNull() ?: return@launch
+
+            val updated = lastSet.copy(difficultyRating = rating)
+            repository.updateSet(updated)
+
+            val newSets = sets.toMutableList()
+            newSets[newSets.size - 1] = updated
+            val newMap = state.setsByExercise.toMutableMap()
+            newMap[exerciseId] = newSets
+
+            _uiState.value = state.copy(
+                setsByExercise = newMap,
+                showExerciseRating = false,
+                ratingExerciseId = null
+            )
+            timerManager.start(lastSet.restSeconds)
+            moveToNextExercise()
+        }
+    }
+
+    fun skipExerciseRating() {
+        viewModelScope.launch {
+            val state = _uiState.value
+            val exerciseId = state.ratingExerciseId ?: return@launch
+            val sets = state.setsByExercise[exerciseId] ?: return@launch
+            val lastSet = sets.lastOrNull() ?: return@launch
+
+            _uiState.value = state.copy(
+                showExerciseRating = false,
+                ratingExerciseId = null
+            )
+            timerManager.start(lastSet.restSeconds)
+            moveToNextExercise()
+        }
+    }
+
+    private fun moveToNextExercise() {
+        val state = _uiState.value
+        val nextExerciseIndex = state.currentExerciseIndex + 1
+        if (nextExerciseIndex < state.exercises.size) {
+            val nextExercise = state.exercises[nextExerciseIndex]
+            viewModelScope.launch {
+                val lastSet = repository.getLastCompletedSetForExercise(nextExercise.id)
+                _uiState.value = state.copy(
+                    currentExerciseIndex = nextExerciseIndex,
+                    currentSetIndex = 0,
+                    showSetCompleteButton = false,
+                    lastSetForCurrentExercise = lastSet
+                )
+                if (state.settings?.autoStartNextSet == true) {
+                    startSet()
+                }
             }
         }
     }

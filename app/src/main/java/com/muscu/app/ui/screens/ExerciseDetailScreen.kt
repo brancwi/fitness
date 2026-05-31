@@ -31,12 +31,18 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.layout.ContentScale
+import com.muscu.app.data.model.PerformedSet
+import com.muscu.app.data.repository.WorkoutRepository
 import com.muscu.app.domain.model.ExerciseInfoRepository
 import com.muscu.app.ui.components.ExerciseIllustration
 
@@ -45,11 +51,17 @@ import com.muscu.app.ui.components.ExerciseIllustration
 fun ExerciseDetailScreen(
     exerciseId: String,
     exerciseName: String,
+    repository: WorkoutRepository? = null,
     onBack: () -> Unit,
     onViewHistory: (String, String) -> Unit = { _, _ -> }
 ) {
     val info = ExerciseInfoRepository.getById(exerciseId)
         ?: ExerciseInfoRepository.getByName(exerciseName)
+
+    val lastSet = remember { mutableStateOf<PerformedSet?>(null) }
+    LaunchedEffect(exerciseId) {
+        lastSet.value = repository?.getLastCompletedSetForExercise(exerciseId)
+    }
 
     Column(modifier = Modifier.fillMaxSize()) {
         TopAppBar(
@@ -90,6 +102,54 @@ fun ExerciseDetailScreen(
                             .padding(12.dp),
                         contentScale = ContentScale.Fit
                     )
+                }
+
+                // Guide de charge dynamique
+                if (lastSet.value != null) {
+                    val set = lastSet.value!!
+                    val recommendation = when (set.difficultyRating) {
+                        1 -> "→ Essaie ${set.weightKg?.times(0.9f)?.let { "%.1f".format(it) } ?: "-"} kg la prochaine fois (-10%)"
+                        2 -> "→ Essaie ${set.weightKg?.times(0.95f)?.let { "%.1f".format(it) } ?: "-"} kg (-5%)"
+                        3 -> "→ Garde ${set.weightKg ?: "-"} kg"
+                        4 -> "→ Essaie ${set.weightKg?.times(1.05f)?.let { "%.1f".format(it) } ?: "-"} kg (+5%)"
+                        5 -> "→ Essaie ${set.weightKg?.times(1.10f)?.let { "%.1f".format(it) } ?: "-"} kg (+10%)"
+                        else -> "→ Dernière charge : ${set.weightKg ?: "-"} kg"
+                    }
+                    Card(
+                        modifier = Modifier.fillMaxWidth(),
+                        colors = CardDefaults.cardColors(
+                            containerColor = MaterialTheme.colorScheme.secondaryContainer
+                        ),
+                        elevation = CardDefaults.cardElevation(2.dp)
+                    ) {
+                        Column(modifier = Modifier.padding(16.dp)) {
+                            Text(
+                                text = "Dernière séance",
+                                style = MaterialTheme.typography.titleMedium,
+                                fontWeight = FontWeight.Bold,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                            Spacer(Modifier.height(4.dp))
+                            Text(
+                                text = "${set.weightKg ?: "-"} kg × ${set.reps ?: "-"} reps",
+                                style = MaterialTheme.typography.bodyMedium,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer
+                            )
+                            Spacer(Modifier.height(4.dp))
+                            Text(
+                                text = recommendation,
+                                style = MaterialTheme.typography.bodySmall,
+                                fontWeight = FontWeight.SemiBold,
+                                color = Color(0xFF4CAF50)
+                            )
+                            Spacer(Modifier.height(8.dp))
+                            Text(
+                                text = "💡 Rappel : arrête-toi quand tu penses pouvoir encore faire 1 ou 2 répétitions (RIR 1-2).",
+                                style = MaterialTheme.typography.bodySmall,
+                                color = MaterialTheme.colorScheme.onSecondaryContainer.copy(alpha = 0.8f)
+                            )
+                        }
+                    }
                 }
 
                 // Muscles sollicités

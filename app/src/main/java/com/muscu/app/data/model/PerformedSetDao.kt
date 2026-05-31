@@ -43,7 +43,7 @@ interface PerformedSetDao {
      */
     @Query("""
         SELECT ps.id, ps.sessionId, ps.exerciseId, ps.setNumber, ps.reps, ps.weightKg, 
-               ps.isCompleted, ps.notes, ps.restSeconds, ws.dateTimestamp as sessionDate
+               ps.isCompleted, ps.notes, ps.restSeconds, ps.difficultyRating, ws.dateTimestamp as sessionDate
         FROM performed_sets ps
         INNER JOIN workout_sessions ws ON ps.sessionId = ws.id
         WHERE ps.exerciseId = :exerciseId AND ps.isCompleted = 1

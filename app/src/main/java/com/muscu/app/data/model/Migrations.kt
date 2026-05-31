@@ -174,5 +174,15 @@ object Migrations {
         }
     }
 
-    val ALL: Array<Migration> = arrayOf(MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15)
+    /**
+     * Migration 15 → 16
+     * Adds difficultyRating column to performed_sets for per-exercise user feedback.
+     */
+    val MIGRATION_15_16 = object : Migration(15, 16) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE performed_sets ADD COLUMN difficultyRating INTEGER")
+        }
+    }
+
+    val ALL: Array<Migration> = arrayOf(MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15, MIGRATION_15_16)
 }
