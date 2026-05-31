@@ -38,7 +38,9 @@ data class SettingsUiState(
     val tempoAccent: String = "neutre",
     val prepCountdownSeconds: String = "5",
     val automationSaved: Boolean = false,
-    val tempoAnalysis: TempoAnalysis? = null
+    val tempoAnalysis: TempoAnalysis? = null,
+    val themeMode: String = "system",
+    val themeSaved: Boolean = false
 )
 
 class SettingsViewModel(
@@ -81,7 +83,9 @@ class SettingsViewModel(
                     tempoProfile = settings.tempoProfile,
                     tempoAccent = settings.tempoAccent,
                     prepCountdownSeconds = settings.prepCountdownSeconds.toString(),
-                    tempoAnalysis = TempoAnalyzer.analyze(settings, settings.defaultReps)
+                    tempoAnalysis = TempoAnalyzer.analyze(settings, settings.defaultReps),
+                    themeMode = settings.themeMode,
+                    themeSaved = false
                 )
             }
         }
@@ -222,6 +226,18 @@ class SettingsViewModel(
             appSettingsRepository.updateTempoProfile(s.tempoProfile)
             appSettingsRepository.updatePrepCountdown(s.prepCountdownSeconds.toIntOrNull() ?: 5)
             _uiState.value = s.copy(automationSaved = true)
+        }
+    }
+
+    fun updateThemeMode(mode: String) {
+        _uiState.value = _uiState.value.copy(themeMode = mode, themeSaved = false)
+    }
+
+    fun saveThemeMode() {
+        viewModelScope.launch {
+            val mode = _uiState.value.themeMode
+            appSettingsRepository.updateThemeMode(mode)
+            _uiState.value = _uiState.value.copy(themeSaved = true)
         }
     }
 

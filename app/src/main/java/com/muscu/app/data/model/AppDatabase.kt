@@ -20,7 +20,7 @@ import java.util.UUID
         Measurement::class,
         AppSettings::class
     ],
-    version = 14,
+    version = 15,
     exportSchema = false
 )
 @TypeConverters(Converters::class)

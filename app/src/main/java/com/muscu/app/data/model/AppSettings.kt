@@ -56,5 +56,8 @@ data class AppSettings(
     val guideSpeedMultiplier: Float = 1.0f,
 
     // Prep countdown before set starts (seconds)
-    val prepCountdownSeconds: Int = 5
+    val prepCountdownSeconds: Int = 5,
+
+    // Theme: "light", "dark", "system"
+    val themeMode: String = "system"
 )

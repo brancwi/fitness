@@ -164,5 +164,15 @@ object Migrations {
         }
     }
 
-    val ALL: Array<Migration> = arrayOf(MIGRATION_12_13, MIGRATION_13_14)
+    /**
+     * Migration 14 → 15
+     * Adds themeMode column to app_settings for dark/light/system theme preference.
+     */
+    val MIGRATION_14_15 = object : Migration(14, 15) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL("ALTER TABLE app_settings ADD COLUMN themeMode TEXT NOT NULL DEFAULT 'system'")
+        }
+    }
+
+    val ALL: Array<Migration> = arrayOf(MIGRATION_12_13, MIGRATION_13_14, MIGRATION_14_15)
 }

@@ -2,12 +2,16 @@ package com.muscu.app.ui.components
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -53,18 +57,25 @@ fun ExerciseIllustration(
         .crossfade(true)
         .build()
 
-    SubcomposeAsyncImage(
-        model = request,
-        contentDescription = null,
-        modifier = modifier,
-        contentScale = contentScale,
-        loading = {
-            Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                CircularProgressIndicator()
+    Surface(
+        color = MaterialTheme.colorScheme.surfaceContainerHighest,
+        shape = RoundedCornerShape(12.dp),
+        modifier = modifier
+    ) {
+        SubcomposeAsyncImage(
+            model = request,
+            contentDescription = null,
+            modifier = Modifier.padding(8.dp),
+            contentScale = contentScale,
+            colorFilter = ColorFilter.tint(MaterialTheme.colorScheme.onSurface),
+            loading = {
+                Box(modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
+                    CircularProgressIndicator()
+                }
+            },
+            error = {
+                // Silently fail — no placeholder needed
             }
-        },
-        error = {
-            // Silently fail — no placeholder needed
-        }
-    )
+        )
+    }
 }

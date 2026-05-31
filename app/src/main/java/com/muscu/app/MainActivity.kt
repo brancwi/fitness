@@ -15,10 +15,17 @@ import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
+import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
+import kotlinx.coroutines.launch
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.lifecycle.viewmodel.compose.viewModel
@@ -28,8 +35,11 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import com.muscu.app.data.model.AppSettings
 import com.muscu.app.data.repository.AppSettingsRepository
 import com.muscu.app.data.repository.WorkoutRepository
+import com.muscu.app.data.updater.AppUpdater
+import com.muscu.app.ui.components.UpdateDialog
 import com.muscu.app.ui.screens.DashboardScreen
 import com.muscu.app.ui.screens.ExerciseDetailScreen
 import com.muscu.app.ui.screens.ExercisePerformanceScreen
@@ -69,7 +79,13 @@ class MainActivity : ComponentActivity() {
         val repository = app.repository
         val appSettingsRepository = app.appSettingsRepository
         setContent {
-            MuscuTheme {
+            val settings by appSettingsRepository.settings.collectAsState(initial = AppSettings())
+            val darkTheme = when (settings.themeMode) {
+                "light" -> false
+                "dark" -> true
+                else -> isSystemInDarkTheme()
+            }
+            MuscuTheme(darkTheme = darkTheme) {
                 MuscuApp(repository, appSettingsRepository)
             }
         }
@@ -79,6 +95,29 @@ class MainActivity : ComponentActivity() {
 @Composable
 fun MuscuApp(repository: WorkoutRepository, appSettingsRepository: AppSettingsRepository) {
     val navController = rememberNavController()
+    val context = LocalContext.current
+    var availableRelease by remember { mutableStateOf<com.muscu.app.data.remote.GitHubRelease?>(null) }
+
+    LaunchedEffect(Unit) {
+        val release = AppUpdater.checkForUpdate(com.muscu.app.BuildConfig.VERSION_NAME)
+        if (release != null) {
+            availableRelease = release
+        }
+    }
+
+    val scope = rememberCoroutineScope()
+    availableRelease?.let { release ->
+        UpdateDialog(
+            release = release,
+            onConfirm = {
+                availableRelease = null
+                scope.launch {
+                    AppUpdater.downloadAndInstall(context, release)
+                }
+            },
+            onDismiss = { availableRelease = null }
+        )
+    }
 
     Scaffold(
         bottomBar = {

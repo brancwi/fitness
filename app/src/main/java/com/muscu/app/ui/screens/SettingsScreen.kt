@@ -280,6 +280,38 @@ fun SettingsScreen(
             }
         }
 
+        // Apparence
+        Card(elevation = CardDefaults.cardElevation(defaultElevation = 4.dp)) {
+            Column(modifier = Modifier.padding(16.dp)) {
+                Text("Apparence", style = MaterialTheme.typography.titleMedium)
+                Spacer(Modifier.height(12.dp))
+                FlowRow(
+                    horizontalArrangement = Arrangement.spacedBy(8.dp),
+                    verticalArrangement = Arrangement.spacedBy(8.dp)
+                ) {
+                    listOf(
+                        "system" to "Système",
+                        "light" to "Clair",
+                        "dark" to "Sombre"
+                    ).forEach { (key, label) ->
+                        FilterChip(
+                            selected = state.themeMode == key,
+                            onClick = { viewModel.updateThemeMode(key) },
+                            label = { Text(label) }
+                        )
+                    }
+                }
+                Spacer(Modifier.height(12.dp))
+                Button(onClick = viewModel::saveThemeMode, modifier = Modifier.fillMaxWidth()) {
+                    Text("Appliquer le thème")
+                }
+                if (state.themeSaved) {
+                    Spacer(Modifier.height(8.dp))
+                    Text("Thème enregistré ! Redémarrage nécessaire.", color = MaterialTheme.colorScheme.primary, style = MaterialTheme.typography.bodyMedium)
+                }
+            }
+        }
+
         // À propos
         Card(elevation = CardDefaults.cardElevation(defaultElevation = 2.dp)) {
             Column(modifier = Modifier.padding(16.dp)) {

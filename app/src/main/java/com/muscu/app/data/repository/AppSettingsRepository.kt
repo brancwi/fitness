@@ -108,4 +108,9 @@ class AppSettingsRepository(private val dao: AppSettingsDao) {
         val current = getLatest()
         dao.update(current.copy(tempoProfile = profile))
     }
+
+    suspend fun updateThemeMode(mode: String) {
+        val current = getLatest()
+        dao.update(current.copy(themeMode = mode))
+    }
 }
