@@ -11,29 +11,26 @@
 | Lignes de code | ~8 200 |
 | Architecture | Android + Jetpack Compose |
 | Base de données | Room (SQLite) |
-| Audit Clean Code | Score global: ⚠️ Moyen |
+| Repositories | 8 (déjà refactorisés) |
+| Clean Code Audit | À refaire |
+
+---
+
+## ✅ DÉJÀ FAIT (à vérifier)
+
+### [DONE] Refactor Repositories
+- WorkoutRepository: 100 lignes, facade propre
+- 7 repositories spécialisés existants
+- **Action**: Vérifier tests unitaires
 
 ---
 
 ## 🔴 CRITIQUES (Doit être fait)
 
-### [CRIT-001] Refactor WorkoutRepository - God Class
-- **Problème**: 178 lignes, gère 5 DAOs
-- **Impact**: Impossible à tester, tout changement = recompilation totale
-- **Solution**: Split en 5 repositories spécialisés
-- **Critères d'acceptation**:
-  - [ ] ExerciseRepository (seed + getByDay)
-  - [ ] WorkoutSessionRepository (startSession, update, getLast)
-  - [ ] PerformedSetRepository (CRUD sets)
-  - [ ] ProfileRepository (get/save UserProfile)
-  - [ ] MeasurementRepository (CRUD Measurement)
-  - [ ] Tests unitaires pour chaque repository
-
 ### [CRIT-002] Refactor WorkoutScreen - 261 lignes
 - **Problème**: 5 zones UI mélangées
-- **Impact**: Difficile à maintenir, tester, modifier
 - **Solution**: Composants séparés
-- **Critères d'acceptation**:
+- **Critères**:
   - [ ] TopAppBar component
   - [ ] SessionCompleteCard component
   - [ ] ExerciseProgress component
@@ -41,50 +38,39 @@
   - [ ] Chaque composant < 80 lignes
 
 ### [CRIT-003] Extraire données hardcodées
-- **Problème**: 12 exercices + programme + règles lombaires en dur
-- **Impact**: Pas de personnalisation, difficile à modifier
+- **Problème**: 12 exercices + programme en dur
 - **Solution**: Fichiers JSON + parser
-- **Critères d'acceptation**:
-  - [ ] exercises.json (titre, muscles, description, image)
-  - [ ] programs.json (jour, exercices, séries, repos)
-  - [ ] rules.json (règles lombaires, vigilances)
+- **Critères**:
+  - [ ] exercises.json
+  - [ ] programs.json
   - [ ] Parser JSON avec validation
   - [ ] Tests des parsers
 
+### [CRIT-004] Ajouter tests unitaires
+- **Problème**: Couverture inconnue, probablement faible
+- **Solution**: Tests pour tous les repositories
+- **Critères**:
+  - [ ] ExerciseRepositoryTest
+  - [ ] WorkoutSessionRepositoryTest
+  - [ ] PerformedSetRepositoryTest
+  - [ ] ProfileRepositoryTest
+  - [ ] MeasurementRepositoryTest
+
 ---
 
-## 🟡 IMPORTANT (Amélioration)
+## 🟡 IMPORTANT
 
 ### [IMP-001] Factoriser les 4 Factory identiques
-- **Problème**: Code dupliqué
-- **Solution**: Generic Factory Pattern
-- **Critères**: -50% de duplication
-
 ### [IMP-002] Ajouter testTag pour tests E2E
-- **Problème**: onNodeWithText everywhere, fragile
-- **Solution**: testTag sur tous les composants interactifs
-- **Critères**: 100% des composants testables par tag
-
 ### [IMP-003] Unifier la logique "jour"
-- **Problème**: Logique dupliquée dans plusieurs screens
-- **Solution**: DayCalculator utilitaire
-- **Critères**: 1 seule source de vérité
 
 ---
 
-## 🟢 NICE TO HAVE (Évolution)
+## 🟢 NICE TO HAVE
 
 ### [NTH-001] Synchronisation cloud
-- Backup des données sur Google Drive / Dropbox
-
 ### [NTH-002] Statistiques avancées
-- Graphiques de progression
-- PR tracking
-- Volume total hebdo
-
 ### [NTH-003] Timer HIIT
-- Mode interval training
-- Sons personnalisables
 
 ---
 
@@ -98,13 +84,12 @@
 
 ---
 
-## 🎯 SPRINT 1 PROPOSÉ
+## 🎯 SPRINT 1 (AJUSTÉ)
 
 | Story | Points | Priorité |
 |-------|--------|----------|
-| CRIT-001: Split repositories | 8 | P0 |
+| CRIT-004: Tests repositories | 5 | P0 |
 | CRIT-003: JSON data | 5 | P0 |
-| IMP-001: Generic Factory | 3 | P1 |
+| CRIT-002: Split WorkoutScreen | 8 | P1 |
 
-**Total: 16 points**
-
+**Total: 18 points**
