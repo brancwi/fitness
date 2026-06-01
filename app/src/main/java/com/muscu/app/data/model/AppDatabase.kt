@@ -6,7 +6,6 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.TypeConverters
 import androidx.sqlite.db.SupportSQLiteDatabase
-import com.muscu.app.data.seed.ExerciseSeedData
 import java.util.UUID
 
 @Database(
@@ -57,8 +56,11 @@ abstract class AppDatabase : RoomDatabase() {
     private class SeedCallback : RoomDatabase.Callback() {
         override fun onCreate(db: SupportSQLiteDatabase) {
             super.onCreate(db)
-            // Seed exercises on fresh install
-            ExerciseSeedData.all().forEach { ex ->
+            // Seed exercises on fresh install via raw SQL to avoid Context dependency in callback.
+            // The actual JSON parsing happens at runtime via JsonDataSource + ExerciseRepository.
+            // For DB creation callback we keep a minimal inline seed to ensure templates can be built.
+            val exercises = com.muscu.app.data.seed.ExerciseSeedData.all()
+            exercises.forEach { ex ->
                 db.execSQL(
                     """INSERT INTO exercises
                         (id, name, dayOfWeek, category, targetSets, targetRepsMin, targetRepsMax,
@@ -75,7 +77,6 @@ abstract class AppDatabase : RoomDatabase() {
             // Create default templates from seeded exercises
             val dayNames = mapOf(1 to "Lundi", 2 to "Mardi", 3 to "Mercredi",
                                  4 to "Jeudi", 5 to "Vendredi", 6 to "Samedi", 7 to "Dimanche")
-            val exercises = ExerciseSeedData.all()
             val now = System.currentTimeMillis()
 
             val days = exercises.map { it.dayOfWeek }.distinct().sorted()

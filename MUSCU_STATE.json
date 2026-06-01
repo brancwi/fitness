@@ -1,0 +1,35 @@
+{
+  "project": "muscu",
+  "current_phase": "sprint-1",
+  "current_ticket": null,
+  "status": "done",
+  "next_ticket": "CRIT-002",
+  "history": [
+    {
+      "ticket": "CRIT-004",
+      "status": "done",
+      "date": "2026-06-01T20:51:00",
+      "tests": 33,
+      "assigned_to": "kimi"
+    },
+    {
+      "ticket": "CRIT-003",
+      "status": "done",
+      "date": "2026-06-01T23:35:00",
+      "tests": 40,
+      "assigned_to": "kimi"
+    }
+  ],
+  "backlog": {
+    "critical": ["CRIT-002"],
+    "important": ["IMP-001", "IMP-002", "IMP-003"],
+    "nice_to_have": ["NTH-001", "NTH-002", "NTH-003"]
+  },
+  "metrics": {
+    "tests": 40,
+    "coverage": 45.0,
+    "loc": 8200,
+    "build_ok": true
+  },
+  "last_update": "2026-06-01T23:35:00"
+}

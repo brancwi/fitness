@@ -15,9 +15,13 @@ import kotlinx.coroutines.flow.Flow
  * Facade repository exposing all domain operations.
  * Delegates to specialized repositories to respect SRP.
  */
-class WorkoutRepository(db: AppDatabase, appSettingsRepository: AppSettingsRepository) {
+class WorkoutRepository(
+    db: AppDatabase,
+    appSettingsRepository: AppSettingsRepository,
+    jsonDataSource: com.muscu.app.data.seed.JsonDataSource? = null
+) {
 
-    private val exerciseRepository = ExerciseRepository(db.exerciseDao())
+    private val exerciseRepository = ExerciseRepository(db.exerciseDao(), jsonDataSource)
     private val templateRepository = WorkoutTemplateRepository(db.workoutTemplateDao())
     private val templateExerciseRepository = TemplateExerciseRepository(db.templateExerciseDao())
     private val sessionRepository = WorkoutSessionRepository(db.workoutSessionDao())

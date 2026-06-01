@@ -1,0 +1,38 @@
+[
+  {
+    "id": "prog-tuesday",
+    "name": "Programme Mardi",
+    "description": "Séance Pectoraux/Dos + Bras",
+    "dayOfWeek": 2,
+    "exerciseIds": [
+      "ex-bench-1",
+      "ex-row-1",
+      "ex-curl-1",
+      "ex-tri-1"
+    ]
+  },
+  {
+    "id": "prog-thursday",
+    "name": "Programme Jeudi",
+    "description": "Séance Épaules + Jambes + Core",
+    "dayOfWeek": 4,
+    "exerciseIds": [
+      "ex-mil-1",
+      "ex-fen-1",
+      "ex-ele-1",
+      "ex-gain-1"
+    ]
+  },
+  {
+    "id": "prog-saturday",
+    "name": "Programme Samedi",
+    "description": "Séance Pectoraux/Dos + Bras (variantes)",
+    "dayOfWeek": 6,
+    "exerciseIds": [
+      "ex-bench-serr",
+      "ex-row-2",
+      "ex-curl-mart",
+      "ex-tri-2"
+    ]
+  }
+]

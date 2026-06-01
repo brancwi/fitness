@@ -2,13 +2,19 @@ package com.muscu.app.data.repository
 
 import com.muscu.app.data.model.Exercise
 import com.muscu.app.data.model.ExerciseDao
+import com.muscu.app.data.seed.JsonDataSource
 import kotlinx.coroutines.flow.Flow
 
-class ExerciseRepository(private val exerciseDao: ExerciseDao) {
+class ExerciseRepository(
+    private val exerciseDao: ExerciseDao,
+    private val jsonDataSource: JsonDataSource? = null
+) {
 
     suspend fun seedIfNeeded() {
         if (exerciseDao.count() == 0) {
-            exerciseDao.insertAll(com.muscu.app.data.seed.ExerciseSeedData.all())
+            val exercises = jsonDataSource?.loadExercises()
+                ?: com.muscu.app.data.seed.ExerciseSeedData.all()
+            exerciseDao.insertAll(exercises)
         }
     }
 
